@@ -370,7 +370,45 @@
     </aside>
   </section>
 
-  <!-- ============ 11. BONUS TIPS ============ -->
+  <!-- ============ 11. CLOSING ============ -->
+  <section class="slide" data-title="Closing">
+    <p class="kicker">// closing</p>
+    <h2 class="h2">One takeaway</h2>
+    <div class="card mt-l" style="text-align:center;padding:40px 32px">
+      <p style="font-family:var(--font-mono);font-size:clamp(28px,3vw,44px);font-weight:700;color:var(--accent);margin:0 0 16px 0">
+        "Use your skills like<br><span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">pure functions</span>"
+      </p>
+      <div class="grid g3" style="margin-top:24px;gap:16px">
+        <div class="card" style="text-align:center;padding:16px">
+          <span style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);font-weight:700">fn single()</span>
+          <p style="font-size:14px;color:var(--text-2);margin:4px 0 0">Single Responsibility</p>
+        </div>
+        <div class="card" style="text-align:center;padding:16px">
+          <span style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);font-weight:700">compose(a, b)</span>
+          <p style="font-size:14px;color:var(--text-2);margin:4px 0 0">Composable</p>
+        </div>
+        <div class="card" style="text-align:center;padding:16px">
+          <span style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);font-weight:700">pure(fn)</span>
+          <p style="font-size:14px;color:var(--text-2);margin:4px 0 0">Side-Effect Free</p>
+        </div>
+      </div>
+    </div>
+    <p class="lede tc mt-l">Back to the original question: <strong>skills aren't mysterious. Start simple, decompose with functional thinking, compose for power.</strong></p>
+    <div class="deck-footer">
+      <span class="mono">#functional #skills #thanks</span>
+      <span class="slide-number" data-current="11" data-total="13"></span>
+    </div>
+    <aside class="notes">
+      <p>If you remember only one thing today, it's this — <strong>"write your skills like pure functions."</strong></p>
+      <p>This has three layers. First, <strong>single responsibility</strong> — one skill does one thing, covers one domain, does it well. No "do-everything" skills.</p>
+      <p>Second, <strong>composable</strong> — two simple skills composed together, the power isn't additive, it's multiplicative. Because the AI automatically infers which skills to load, you don't need to manually orchestrate.</p>
+      <p>Third, <strong>side-effect free</strong> — this is also important in functional thinking. A good skill shouldn't depend on external state or modify the global environment. It should be self-contained, predictable, and reusable.</p>
+      <p>Going back to the original frustration — too many skills, can't find the right one, afraid to write your own. What I want you to take away is: <strong>skills aren't mysterious, they're just structured prompts</strong>. Start from your smallest pain point, write a skill that does one thing well, then compose it, iterate it. Functional thinking will help you write it right.</p>
+      <p>Thanks for listening. Let's move to Q&A.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 12. BONUS TIPS ============ -->
   <section class="slide" data-title="Bonus Tips">
     <p class="kicker">// bonus tips</p>
     <h2 class="h2">Three more tips</h2>
@@ -397,44 +435,6 @@
       <p>Think about it with the 80/20 rule. <strong>About 80% of your daily tasks don't require the most expensive model</strong>. Writing a commit message, running a simple refactor, generating boilerplate — a faster, cheaper model handles these just fine. Reserve the heavy artillery — the Opus-level models with extended thinking — for the 20% of tasks that actually need deep reasoning: architectural decisions, complex debugging, nuanced code reviews.</p>
       <p>This is directly related to token efficiency. <strong>The most expensive token is the one you didn't need to spend</strong>. Matching model to task complexity is one of the easiest ways to cut your AI budget without sacrificing quality.</p>
       <p>OK, last slide.</p>
-    </aside>
-  </section>
-
-  <!-- ============ 12. CLOSING ============ -->
-  <section class="slide" data-title="Closing">
-    <p class="kicker">// closing</p>
-    <h2 class="h2">One takeaway</h2>
-    <div class="card mt-l" style="text-align:center;padding:40px 32px">
-      <p style="font-family:var(--font-mono);font-size:clamp(28px,3vw,44px);font-weight:700;color:var(--accent);margin:0 0 16px 0">
-        "Use your skills like<br><span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">pure functions</span>"
-      </p>
-      <div class="grid g3" style="margin-top:24px;gap:16px">
-        <div class="card" style="text-align:center;padding:16px">
-          <span style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);font-weight:700">fn single()</span>
-          <p style="font-size:14px;color:var(--text-2);margin:4px 0 0">Single Responsibility</p>
-        </div>
-        <div class="card" style="text-align:center;padding:16px">
-          <span style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);font-weight:700">compose(a, b)</span>
-          <p style="font-size:14px;color:var(--text-2);margin:4px 0 0">Composable</p>
-        </div>
-        <div class="card" style="text-align:center;padding:16px">
-          <span style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);font-weight:700">pure(fn)</span>
-          <p style="font-size:14px;color:var(--text-2);margin:4px 0 0">Side-Effect Free</p>
-        </div>
-      </div>
-    </div>
-    <p class="lede tc mt-l">Back to the original question: <strong>skills aren't mysterious. Start simple, decompose with functional thinking, compose for power.</strong></p>
-    <div class="deck-footer">
-      <span class="mono">#functional #skills #thanks</span>
-      <span class="slide-number" data-current="12" data-total="13"></span>
-    </div>
-    <aside class="notes">
-      <p>If you remember only one thing today, it's this — <strong>"write your skills like pure functions."</strong></p>
-      <p>This has three layers. First, <strong>single responsibility</strong> — one skill does one thing, covers one domain, does it well. No "do-everything" skills.</p>
-      <p>Second, <strong>composable</strong> — two simple skills composed together, the power isn't additive, it's multiplicative. Because the AI automatically infers which skills to load, you don't need to manually orchestrate.</p>
-      <p>Third, <strong>side-effect free</strong> — this is also important in functional thinking. A good skill shouldn't depend on external state or modify the global environment. It should be self-contained, predictable, and reusable.</p>
-      <p>Going back to the original frustration — too many skills, can't find the right one, afraid to write your own. What I want you to take away is: <strong>skills aren't mysterious, they're just structured prompts</strong>. Start from your smallest pain point, write a skill that does one thing well, then compose it, iterate it. Functional thinking will help you write it right.</p>
-      <p>Thanks for listening. Let's move to Q&A.</p>
     </aside>
   </section>
 
