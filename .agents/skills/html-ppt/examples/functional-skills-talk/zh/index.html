@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-themes="engineering-whiteprint,catppuccin-mocha,tokyo-night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>函数式思维 — 用函数式思维来设计 AI Agent Skill</title>
+<link rel="stylesheet" href="../../../assets/fonts.css">
+<link rel="stylesheet" href="../../../assets/base.css">
+<link rel="stylesheet" id="theme-link" href="../../../assets/themes/engineering-whiteprint.css">
+<link rel="stylesheet" href="../../../assets/animations/animations.css">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="tpl-presenter-mode-reveal">
+<div class="deck">
+
+  <!-- ============ 1. COVER ============ -->
+  <section class="slide" data-title="封面">
+    <p class="kicker">AI Agent Skill · Token 效率 · 30 分钟</p>
+    <h1 class="h1 anim-fade-up" data-anim="fade-up">Functional<br><span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">Skills</span></h1>
+    <p class="lede mt-m">用函数式思维来设计 AI Agent Skill<br>单一职责 · 可组合 · 无副作用</p>
+    <div class="speaker">
+      <img src="../../../assets/avatar.png" class="av" style="width:42px;height:42px;border-radius:50%;object-fit:cover">
+      <div><b>@lyon</b><span>全栈工程师 · ESDD · 2026</span></div>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">#函数式编程 #Skill #AI Agent #Token 效率</span>
+      <span class="slide-number" data-current="1" data-total="13"></span>
+    </div>
+    <aside class="notes">
+      <p>大家好，我是 Lyon。今天想和大家聊聊，我近半年来一直在探索的一个话题 —— <strong>如何更高效地使用 AI Agent Skill</strong>。</p>
+      <p>这不是一场典型的 AI 技术分享。我不会教你 prompt engineering 的技巧，也不会解释 MCP 是什么。我的切入角度是 <strong>"设计思维"</strong> —— 具体来说，<em>如何用函数式编程的原则来设计和组合你的 Skill</em>。</p>
+      <p>为什么选这个角度？因为我看到大多数人使用 Skill 的方式非常被动：下载一堆，试试看，不合适就换，最后放弃。根本原因不是 Skill 不够多 —— 而是 <strong>我们对 Skill 的本质有误解</strong>。Skill 不是什么魔法，它们只是"结构化的 prompt"。</p>
+      <p>今天 30 分钟，我会从两个核心的函数式原则出发 —— <strong>单一职责</strong> 和 <strong>组合</strong> —— 用实际案例展示这种思维方式如何让 Skill 效率成倍提升。我也会分享我的日常工作流，让你带走一些实用的东西。</p>
+      <p>现在开始吧。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 2. THE PROBLEM ============ -->
+  <section class="slide" data-title="问题">
+    <p class="kicker">// 开场 · 痛点</p>
+    <h2 class="h2">这些场景熟悉吗？</h2>
+    <div class="grid g2 mt-l">
+      <div class="card card-accent">
+        <h4>🔍 找不到合适的 Skill</h4>
+        <p class="dim">Skill 太多，文档太长<strong>懒得看</strong>。找到的那个还得自己改才能用。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>✍️ 不敢自己写</h4>
+        <p class="dim">Skill 让人感觉很复杂、很玄学。但其实它<strong>只是个结构化的 prompt</strong>。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🔧 别人的 Skill 不太适用</h4>
+        <p class="dim">下载的 Skill 总差点东西。很多时候，<strong>自己写反而更快</strong>。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>💸 试错成本太高</h4>
+        <p class="dim">频繁调试 Skill = 浪费 token。低质量 → 反复重做 → 持续浪费 token。</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>举手示意一下 —— 有多少人日常在用 Skill？有多少人自己写过？</p>
+      <p>好。我观察到的情况是，大多数人用 Skill，但很少有人写 Skill。为什么？我认为有四个痛点。</p>
+      <p>第一，<strong>Skill 太多了</strong>。打开一个 Skill 仓库，几百个。每个都有长长的文档。人天生就懒 —— 我们不会去读完。</p>
+      <p>第二，<strong>就算找到，也可能不适用</strong>。试一下，不适合你的场景，花更多时间去调整。</p>
+      <p>第三，也是我觉得最关键的一点 —— <strong>人们把 Skill 神秘化了</strong>。觉得写 Skill 需要什么特殊的专业知识。但 Skill 就是一个有格式的 prompt。如果你会写 prompt，你就会写 Skill。</p>
+      <p>第四，<strong>试错成本很高</strong>。一个设计不好的 Skill 可能有几百行。每次使用，AI 都要全部读完。如果质量低，你就要反复重做 —— 每次重做都是一轮 token 消耗。所以 Skill 质量直接关联 token 效率。</p>
+      <p>今天我给出的答案聚焦在痛点三和四 —— <strong>如何设计出纯粹、高效、组合后威力倍增的 Skill</strong>。答案就是函数式思维。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 3. DEMYSTIFY ============ -->
+  <section class="slide" data-title="解构">
+    <p class="kicker">// 第一幕 · 解构</p>
+    <h2 class="h2">Skill 就是一个<span class="accent">结构化的 prompt</span>。<br>仅此而已。</h2>
+    <div class="stack mt-l">
+      <div class="rule-row">
+        <span class="num red">01</span>
+        <div>
+          <b>减少<span class="accent">重复的 prompt engineering</span></b>
+          <p class="dim">写一次，到处用。一处维护 —— 所有消费者都受益于更新。</p>
+        </div>
+      </div>
+      <div class="rule-row">
+        <span class="num red">02</span>
+        <div>
+          <b>实现<span class="accent">共享和复用</span></b>
+          <p class="dim">封装领域知识 → 别人加载 → 开箱即用。不用每个人写自己的版本。</p>
+        </div>
+      </div>
+      <div class="rule-row">
+        <span class="num red">03</span>
+        <div>
+          <b>从<span class="accent">最简单的开始</span></b>
+          <p class="dim">20 行的 Skill 也是 Skill。先解决你最小的痛点，然后迭代。</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>在深入函数式思维之前，我需要做一件事 —— <strong>把 Skill 解构掉</strong>。</p>
+      <p>一个 Skill 文件里有什么？一段 system prompt，一些触发条件，也许还有一些约束规则。本质上，和你每天在 Cursor 里写的 system prompt 没有区别。唯一的区别：<strong>Skill 有格式规范</strong> —— 放在哪、有什么元数据、如何触发。</p>
+      <p>这个"结构"给了你什么？三样东西。</p>
+      <p>第一，<strong>消除了重复的 prompt engineering</strong>。你知道那种感觉 —— 每个新项目、每次新对话，都要复制粘贴一大段 system prompt。Skill 解决了这个问题。加载一次，集中维护，到处更新。</p>
+      <p>第二，<strong>共享和复用</strong>。你写了一个处理 Bitbucket PR 的 Skill —— 你的同事也需要同样的能力。直接加载就行，不需要从零写。这对团队效率提升巨大，因为 prompt engineering 非常个人化 —— 每个人的输出质量差异很大。</p>
+      <p>第三，也是最重要的 —— <strong>从最简单的开始</strong>。很多人觉得 Skill 得覆盖完整的工作流才有价值。错了。一个只做好一件事的 Skill —— 比如"从 CLI 获取 git diff" —— 用对了就已经很强大。别让神秘的印象吓到你。</p>
+      <p>好，解构完成。现在进入核心：函数式思维如何应用到 Skill 设计。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 4. FUNCTIONAL MAPPING ============ -->
+  <section class="slide" data-title="函数式映射">
+    <p class="kicker">// 第二幕 · 函数式思维</p>
+    <h2 class="h2">函数式思维<br>→ Skill 设计</h2>
+    <div class="grid g2 mt-l">
+      <div class="card card-accent">
+        <h4>🧩 单一职责</h4>
+        <p class="dim">一个函数只做一件事，并把它做好。</p>
+        <div class="divider" style="margin:12px 0"></div>
+        <p class="dim"><strong>→ 一个 Skill 覆盖一个领域</strong>，并把它做好。</p>
+        <p class="dim" style="margin-top:8px;font-size:13px;color:var(--text-3)">"无所不能"的 Skill = 难以维护、复用、组合</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🔗 组合</h4>
+        <p class="dim">复杂行为从简单函数的组合中涌现。</p>
+        <div class="divider" style="margin:12px 0"></div>
+        <p class="dim"><strong>→ 两个简单 Skill 组合 = 一个更强大的 Skill</strong></p>
+        <p class="dim" style="margin-top:8px;font-size:13px;color:var(--text-3)">AI 自动推断给定任务该加载哪些 Skill</p>
+      </div>
+    </div>
+    <p class="lede mt-l tc" style="text-align: left;">"<span class="accent">像写纯函数一样写你的 Skill</span><br>&nbsp;&nbsp; — 单一职责、可组合、无副作用"</p>
+    <aside class="notes">
+      <p>函数式编程的两个核心原则 —— 相信大家都很熟悉。让我意外的是，很少有人把它们应用到 Skill 设计上。</p>
+      <p><strong>第一：单一职责</strong>。一个函数只做一件事，并把它做好。在 Skill 世界里，就是一个 Skill 覆盖一个业务领域。我见过太多"巨无霸 Skill" —— 比如一个叫"全栈开发助手"的，把前端、后端、数据库、部署、测试……全塞进一个文件。结果呢？<em>AI 每次都要读几千行</em>，而且那些指令甚至可能互相冲突。维护起来简直是灾难。</p>
+      <p><strong>第二：组合</strong>。在函数式世界里，复杂行为不是靠写复杂函数得来的 —— 而是组合简单函数。在 Skill 世界里，两个足够简单纯粹的 Skill 组合在一起，威力远不止相加。而且今天可能最重要的一个洞察 —— <strong>AI 会自动推断该加载哪些 Skill</strong>。</p>
+      <p>它看到你的任务描述里有"review 这个 PR"，就加载代码审查 Skill。看到"从 Bitbucket 获取"，就加载 Bitbucket CLI Skill。这种推断能力，正是你函数式设计的结果 —— 因为每个 Skill 的责任边界足够清晰，AI 能准确判断"哪个 Skill 适用于此"。</p>
+      <p>用一个真实案例来演示。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 5. CASE STUDY ============ -->
+  <section class="slide" data-title="案例研究">
+    <p class="kicker">// 第二幕 · 案例研究</p>
+    <h2 class="h2">代码审查案例：<br><span class="accent">两种设计</span></h2>
+    <div class="grid g2 mt-l">
+      <div class="card" style="border-left: 4px solid var(--bad)">
+        <h4 style="color:var(--warn)">❌ 非函数式</h4>
+        <p class="dim" style="font-size:14px;line-height:1.7">
+          一个 <span class="mono">"巨无霸"</span> 代码审查 Skill：
+        </p>
+        <ul style="font-size:13px;color:var(--text-2);padding-left:18px;margin-top:8px;line-height:1.8">
+          <li>从 Bitbucket 拉取 PR diff</li>
+          <li>解析 diff 文件</li>
+          <li>对照本地代码库分析</li>
+          <li>生成审查意见</li>
+          <li>...全在一个文件里</li>
+        </ul>
+        <p class="dim" style="margin-top:10px;font-size:12px;color:var(--text-3)">换到 GitHub？重写。换审查策略？重写。</p>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--good)">
+        <h4 style="color:var(--good)">✅ 函数式</h4>
+        <p class="dim" style="font-size:14px;line-height:1.7">
+          拆成 <span class="mono">三个</span> 独立 Skill：
+        </p>
+        <ul style="font-size:13px;color:var(--text-2);padding-left:18px;margin-top:8px;line-height:1.8">
+          <li><strong>using-bitbucket-cli</strong> — 获取 PR 数据</li>
+          <li><strong>java-best-practices</strong> — 审查策略（代码规范、技术栈、性能、安全）</li>
+          <li><strong>requesting-code-review</strong> — 描述审查流程（抽象掉"数据从哪来、如何审查"）</li>
+        </ul>
+        <p class="dim" style="margin-top:10px;font-size:12px;color:var(--text-3)">换到 GitHub？把 Bitbucket CLI 换成 GitHub CLI。换 Python？换审查策略 Skill。其他 Skill：零修改。</p>
+      </div>
+    </div>
+    <div class="card mt-m" style="text-align:center">
+      <p class="dim"><strong class="accent">💡 AI 推断是关键</strong> — 它看到"审查这个 Java PR"，就会自动加载 <span class="mono">using-bitbucket-cli</span> + <span class="mono">java-best-practices</span> + <span class="mono">requesting-code-review</span></p>
+    </div>
+    <aside class="notes">
+      <p>好，用我实际使用的一个真实案例来验证刚才说的一切。这是一个代码审查场景。</p>
+      <p>左边 —— 非函数式设计 —— 那是我最初的做法。我写了一个巨大的 Skill，把"如何从 Bitbucket 拉 PR"、"如何解析 diff"、"如何生成审查意见"全塞进一个文件。然后发生了什么？</p>
+      <p><strong>一个月后我要审查一个 GitHub 仓库</strong>。这个 Skill 完全废了 —— "拉取 PR"那部分硬编码了 Bitbucket 的 API。我要么重写整个 Skill，要么新建一个 GitHub 版本。两种都意味着大量的重复劳动。</p>
+      <p>右边是重构后的版本。我把它拆成 <strong>三个 Skill</strong>：<em>一个处理"获取外部数据"（Bitbucket CLI），一个处理"审查策略"（java-best-practices），第三个处理"审查流程"（requesting-code-review）</em>。</p>
+      <p>为什么要有第三个？因为审查代码不只是检查语法 —— <strong>你需要一个策略</strong>。对 Java 来说，可能意味着检查代码规范、技术栈约束、性能模式、安全问题。审查流程 Skill 是通用的 —— 它描述<em>如何</em>审查。但 <strong>java-best-practices</strong> 描述<em>审查什么</em>。两个不同的职责。</p>
+      <p>AI 怎么知道加载全部三个？通过推断。AI 看到你的任务描述提到 Java 审查和 PR，就自动加载 <strong>using-bitbucket-cli</strong> 获取数据，<strong>java-best-practices</strong> 获取审查策略，<strong>requesting-code-review</strong> 获取流程。</p>
+      <p>结果呢？灵活性。当项目迁移到 GitHub 时，我只需把 <strong>using-bitbucket-cli</strong> 换成 <strong>using-gh-cli</strong>。审查 Python 项目时，把 <strong>java-best-practices</strong> 换成 Python 审查策略 Skill。核心的审查流程 Skill 从不需要改动。这种灵活性不是你额外设计的 —— 它是<em>从分解中涌现出来的</em>。单一职责天然赋予你可替换性。</p>
+      <p>这就是核心信息：<strong>Skill 设计不在于做出"功能最强"的 Skill —— 而在于做出"最可分解"的 Skill</strong>。因为纯粹的 Skill 组合起来才是真正的力量。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 6. DAILY: TOKEN EFFICIENCY + CODING ============ -->
+  <section class="slide" data-title="Token 效率 & 编码">
+    <p class="kicker">// 第三幕 · 日常 Skill · Token & 编码</p>
+    <h2 class="h2">节省 Token &amp; <span class="accent">编码</span></h2>
+    <div class="grid g3 mt-l">
+      <div class="card card-accent">
+        <h4>⚡ Token 效率</h4>
+        <p class="dim"><span class="mono">caveman</span> — 压缩约 75% 的输出 token 同时保持完整技术准确度。我每次对话的默认设置。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🛠️ 编码</h4>
+        <ul style="font-size:13px;color:var(--text-2);padding-left:14px;margin:6px 0 0;line-height:1.7">
+          <li><span class="mono">brainstorming</span> — 澄清需求</li>
+          <li><span class="mono">writing-plans</span> — 实现计划</li>
+          <li><span class="mono">test-driven-development</span> — TDD</li>
+          <li><span class="mono">subagent-driven-development</span> — 并行 agent</li>
+          <li><span class="mono">requesting-code-review</span> — 代码审查</li>
+          <li><span class="mono">systematic-debugging</span> — 调试</li>
+        </ul>
+      </div>
+      <div class="card card-accent">
+        <h4>✨ 重构</h4>
+        <p class="dim"><span class="mono">simplify</span> — 重构最近编写的代码，提升清晰度和一致性，不改变功能。</p>
+        <p class="dim" style="margin-top:8px;"><span class="mono">clonedeps</span> — 将依赖源码拉到本地，直接检查库内部实现。</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>现在来分享一些实用的东西 —— <strong>我每天使用的 Skill</strong>，按类别整理。</p>
+      <p>首先是 <strong>Token 效率</strong>。这个简单但强大 —— <code>caveman</code> 压缩输出约 75%，同时保持完整技术准确度。这是我的默认设置 —— 每次对话一开始就打开。如果今天只能带走一样东西，明天试试这个。</p>
+      <p>其次是 <strong>编码</strong>。这是我花时间最多的地方。我用 Superpowers Skill 包，它给了我一整套可组合的开发方法论。每个 Skill 只做一件事 —— <code>brainstorming</code> 澄清需求，<code>writing-plans</code> 做计划，<code>test-driven-development</code> 做 TDD，<code>subagent-driven-development</code> 跑并行 agent，<code>requesting-code-review</code> 做审查，<code>systematic-debugging</code> 做调试。</p>
+      <p>还有两个额外的：<code>simplify</code> 在写完代码后用来重构，提升清晰度；<code>clonedeps</code> 把依赖源码拉到本地，直接查内部实现。</p>
+      <p>注意这个模式 —— <strong>每个 Skill 处理开发周期的一个阶段</strong>。需要什么加载什么，按需组合。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 7. DAILY: CONTEXT & HARNESS ============ -->
+  <section class="slide" data-title="上下文 & 基础设施">
+    <p class="kicker">// 第三幕 · 日常 Skill · 上下文 & 基础设施</p>
+    <h2 class="h2">上下文 &amp;&nbsp;<span class="accent">基础设施</span></h2>
+    <p class="lede" style="margin-bottom:16px">赋予 agent <strong>从内部系统拉取上下文</strong> 的能力 —— 越声明式，上限越高。</p>
+    <div class="grid g3 mt-s">
+      <div class="card card-accent">
+        <h4>🔌 版本控制</h4>
+        <p class="dim"><span class="mono">using-bitbucket-cli</span></p>
+        <p class="dim"><span class="mono">using-gh-cli</span></p>
+        <p class="dim" style="margin-top:6px;font-size:12px">每个平台一个 CLI。可组合。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>📋 项目管理 & 沟通</h4>
+        <p class="dim"><span class="mono">using-jira-cli</span></p>
+        <p class="dim"><span class="mono">using-confluence-cli</span></p>
+        <p class="dim"><span class="mono">using-mst-cli</span></p>
+        <p class="dim" style="margin-top:6px;font-size:12px">拉取 ticket、文档和消息作为上下文。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🏗️ 基础设施</h4>
+        <p class="dim"><span class="mono">creating-agents-md</span></p>
+        <p class="dim" style="margin-top:8px;">生成遵循最佳实践的 AGENTS.md 文件。一个 Skill 让你的项目适配 AI。</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>下一类 —— <strong>上下文和基础设施</strong>。这是让 agent 有能力从你的内部系统拉取信息。</p>
+      <p>上下文 Skill 的结构都一样 —— <strong>每个系统一个 CLI 封装</strong>。Bitbucket、GitHub、Jira、Confluence、Microsoft Teams —— 每个都是独立 Skill，精确知道如何和一个系统通信。这就是单一职责在行动。</p>
+      <p>为什么重要？因为当任务说"审查这个 Jira ticket 对应的 PR"，AI 能自动推断需要 <code>using-jira-cli</code> 获取 ticket 上下文，<code>using-bitbucket-cli</code> 获取代码。你没有硬编码那个组合 —— 它是<em>从每个 Skill 清晰的责任边界中涌现出来的</em>。</p>
+      <p>这里 <strong>声明式原则</strong> 起作用了 —— 你的集成 Skill 越声明式，上限越高。描述<em>你需要什么</em>，而不是<em>怎么获取</em>。让 AI 来搞定"怎么"。</p>
+      <p>基础设施下面，<code>creating-agents-md</code> 是一个单一用途的 Skill，生成 AGENTS.md 文件 —— 让项目适配 AI。一个 Skill，一份职责。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 8. DAILY: KNOWLEDGE BASE & MEMORY ============ -->
+  <section class="slide" data-title="知识库 & 记忆">
+    <p class="kicker">// 第三幕 · 日常 Skill · 知识</p>
+    <h2 class="h2">知识库 &amp;&nbsp;<span class="accent">记忆</span></h2>
+    <div class="grid g3 mt-l">
+      <div class="card card-accent">
+        <h4>🔬 深度理解</h4>
+        <p class="dim"><span class="mono">understand-anything</span></p>
+        <p class="dim" style="margin-top:8px;">从代码库和文档生成知识图谱。理解复杂领域。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>📦 项目记忆</h4>
+        <p class="dim"><span class="mono">using-memvid-cli</span></p>
+        <p class="dim" style="margin-top:8px;">逐项目压缩记忆。按需提供项目专属上下文。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🌐 跨域 RAG</h4>
+        <p class="dim"><span class="mono">using-light-rag</span></p>
+        <p class="dim" style="margin-top:8px;">跨项目、跨领域的知识检索。回溯其他地方相似问题是怎么解决的。</p>
+      </div>
+    </div>
+    <div class="card mt-m" style="text-align:center">
+      <p class="dim" style="font-size:14px"><strong class="accent">三层架构</strong>：深度理解 → 项目记忆 → 跨域检索</p>
+    </div>
+    <aside class="notes">
+      <p>接下来 —— <strong>知识库和记忆</strong>。这是 Skill 超越"做任务"、开始构建机构记忆的地方。</p>
+      <p>三层架构。第一层，<code>understand-anything</code> —— 从代码库和文档生成知识图谱。这是我在接手新项目或面对复杂领域时理清思路的方式。输出是交互式图谱，不只是文字。</p>
+      <p>第二层，<code>using-memvid-cli</code> —— 逐项目知识管理。等我理解了一个项目，我会把那层理解存储为压缩记忆，agent 之后可以查询。可以把它理解为"项目专属上下文，按需获取"。</p>
+      <p>第三层，<code>using-light-rag</code> —— 这超越了单个项目。它管理跨项目、跨领域的知识。当我需要回溯另一个代码库里相似问题是怎么解决的，就看这里。</p>
+      <p>注意这个分层架构 —— <strong>深度理解输入到项目记忆，项目记忆输入到跨域检索</strong>。每一层都是独立 Skill，边界清晰。可以独立使用，也可以组合。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 9. DAILY: AUTHORING ============ -->
+  <section class="slide" data-title="创作 & Skill 创建">
+    <p class="kicker">// 第三幕 · 日常 Skill · 创作</p>
+    <h2 class="h2">文档创作 &amp;&nbsp;<span class="accent">创建 Skill</span></h2>
+    <div class="grid g2 mt-l">
+      <div class="card card-accent">
+        <h4>📄 文档创作</h4>
+        <ul style="font-size:13px;color:var(--text-2);padding-left:14px;line-height:1.8">
+          <li><span class="mono">Kami</span> — 排版专业文档（报告、白皮书、简历）</li>
+          <li><span class="mono">html-ppt</span> — 生成 HTML 幻灯片 <em>（比如这份！）</em></li>
+        </ul>
+      </div>
+      <div class="card card-accent">
+        <h4>🛠️ 创建 Skill</h4>
+        <ul style="font-size:13px;color:var(--text-2);padding-left:14px;line-height:1.8">
+          <li><span class="mono">skill-creator</span> — 创建和优化新 Skill</li>
+          <li><span class="mono">reviewing-skill</span> — 审查和验证 Skill</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card mt-m" style="text-align:center">
+      <p class="dim" style="font-size:14px"><strong class="accent">元 Skill</strong>：创建和验证其他 Skill 的 Skill。Skill 工程的衔尾蛇。</p>
+    </div>
+    <aside class="notes">
+      <p>最后一类 —— <strong>创作</strong>。这些 Skill 产生输出，不只是处理输入。</p>
+      <p><code>Kami</code> 生成排版精美的文档 —— 报告、白皮书、一页纸。<code>html-ppt</code> 生成幻灯片 —— 实际上，<em>这份 deck 就是用 html-ppt 创建的</em>。所以你正在看的，就是我正在描述的东西的输出。非常元。</p>
+      <p>还有元 Skill —— <code>skill-creator</code> 创建新 Skill，<code>reviewing-skill</code> 验证 Skill。这些是操作 Skill 本身的 Skill。Skill 工程的衔尾蛇。</p>
+      <p>重要的是 <strong>创作 Skill 也遵循同样的单一职责原则</strong>。Kami 做文档，html-ppt 做幻灯片，skill-creator 做 Skill。互不重叠。当你需要一条流水线时 —— 比如"研究一个话题 → 生成报告 → 创建幻灯片" —— 它们自然组合在一起。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 10. COMPOSABLE WORKFLOWS ============ -->
+  <section class="slide" data-title="可组合工作流">
+    <p class="kicker">// 第三幕 · 可组合工作流</p>
+    <h2 class="h2">可组合的<span class="accent">工作流</span></h2>
+    <div class="stack mt-m">
+      <div class="agenda-row">
+        <span class="num" style="color:var(--accent-2)">A</span>
+        <span class="t" style="font-size:14px">标准 superpowers 流程</span>
+        <span class="d"><span class="mono" style="font-size:11px">brainstorming → writing-plans → subagent-driven-dev → requesting-code-review → simplify</span></span>
+      </div>
+      <div class="agenda-row">
+        <span class="num" style="color:var(--accent-2)">B</span>
+        <span class="t" style="font-size:14px">Jira bug 修复</span>
+        <span class="d"><span class="mono" style="font-size:11px">using-jira-cli → using-memvid-cli → tdd → requesting-code-review → simplify</span></span>
+      </div>
+      <div class="agenda-row">
+        <span class="num" style="color:var(--accent-2)">C</span>
+        <span class="t" style="font-size:14px">GitHub PR 审查</span>
+        <span class="d"><span class="mono" style="font-size:11px">using-gh-cli + requesting-code-review</span></span>
+      </div>
+      <div class="agenda-row">
+        <span class="num" style="color:var(--accent-2)">D</span>
+        <span class="t" style="font-size:14px">Confluence 需求开发</span>
+        <span class="d"><span class="mono" style="font-size:11px">using-confluence-cli → using-light-rag → brainstorming → writing-plans → subagent-driven-dev → code-review → simplify</span></span>
+      </div>
+      <div class="agenda-row">
+        <span class="num" style="color:var(--accent-2)">E</span>
+        <span class="t" style="font-size:14px">技术调研 + 文档</span>
+        <span class="d"><span class="mono" style="font-size:11px">brainstorming → understand-anything → Kami</span></span>
+      </div>
+      <div class="agenda-row">
+        <span class="num" style="color:var(--accent-2)">F</span>
+        <span class="t" style="font-size:14px">Skill创建</span>
+        <span class="d"><span class="mono" style="font-size:11px">skill-creator + reviewing-skill</span></span>
+      </div>
+      <div class="agenda-row">
+        <span class="num" style="color:var(--accent-2)">G</span>
+        <span class="t" style="font-size:14px">项目 AI 适配</span>
+        <span class="d"><span class="mono" style="font-size:11px">creating-agents-md</span></span>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>这就是组合真正发光的地方。这些是我每天实际使用的工作流 —— <strong>每个都只是一系列简单、单一职责的 Skill</strong>。</p>
+      <p>工作流 A 是标准 superpowers 功能开发流程：brainstorm 澄清需求，plan 分解任务，并行 agent 执行，review，最后 simplify。</p>
+      <p>工作流 B 是我的 bug 修复流程：从 Jira 拉取上下文，从 memvid 回溯项目知识，用 TDD 先写测试，review，simplify。</p>
+      <p>工作流 C 最简单 —— 只是两个 Skill 组合。从 GitHub 拉取，然后审查。就这样。两个 Skill，一件事。</p>
+      <p>工作流 D 是最复杂的 —— 一个从 Confluence 文档开始的功能需求，用 LightRAG 做跨域知识增强，然后走完整开发流程。</p>
+      <p>工作流 E 是研究导向的 —— brainstorm 一个问题，用知识图谱深入理解，然后用 Kami 生成精美文档。</p>
+      <p>工作流 F 是元的 —— 用 Skill 创建 Skill。</p>
+      <p>工作流 G 关于 <strong>项目 AI 适配</strong> —— 用 <code>creating-agents-md</code> 生成 AGENTS.md 文件，让任何项目都能立即适配 AI。一个 Skill，一份职责：桥接你的代码库和 AI agent。</p>
+      <p>注意：<strong>每个工作流只是同一小套 Skill 的不同组合</strong>。Skill 不变 —— 组合变化。这就是函数式设计的威力。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 11. CLOSING ============ -->
+  <section class="slide" data-title="结语">
+    <p class="kicker">// 结语</p>
+    <h2 class="h2">一条建议</h2>
+    <div class="card mt-l" style="text-align:center;padding:40px 32px">
+      <p style="font-family:var(--font-mono);font-size:clamp(28px,3vw,44px);font-weight:700;color:var(--accent);margin:0 0 16px 0">
+        "像写<span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">纯函数</span>一样<br>来写你的 Skill"
+      </p>
+      <div class="grid g3" style="margin-top:24px;gap:16px">
+        <div class="card" style="text-align:center;padding:16px">
+          <span style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);font-weight:700">fn single()</span>
+          <p style="font-size:14px;color:var(--text-2);margin:4px 0 0">单一职责</p>
+        </div>
+        <div class="card" style="text-align:center;padding:16px">
+          <span style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);font-weight:700">compose(a, b)</span>
+          <p style="font-size:14px;color:var(--text-2);margin:4px 0 0">可组合</p>
+        </div>
+        <div class="card" style="text-align:center;padding:16px">
+          <span style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);font-weight:700">pure(fn)</span>
+          <p style="font-size:14px;color:var(--text-2);margin:4px 0 0">无副作用</p>
+        </div>
+      </div>
+    </div>
+    <p class="lede tc mt-l">回到最初的问题：<strong>Skill 并不神秘。从简单开始，用函数式思维分解，组合出力量。</strong></p>
+    <div class="deck-footer">
+      <span class="mono">#函数式编程 #Skill #感谢</span>
+      <span class="slide-number" data-current="11" data-total="13"></span>
+    </div>
+    <aside class="notes">
+      <p>如果今天只能记住一件事，那就是 —— <strong>"像写纯函数一样写你的 Skill。"</strong></p>
+      <p>这有三层含义。第一，<strong>单一职责</strong> —— 一个 Skill 做一件事，覆盖一个领域，把它做好。不写"无所不能"的 Skill。</p>
+      <p>第二，<strong>可组合</strong> —— 两个简单 Skill 组合在一起，威力不是加法，是乘法。因为 AI 会自动推断该加载哪些 Skill，你不需要手动编排。</p>
+      <p>第三，<strong>无副作用</strong> —— 这在函数式思维中同样重要。一个好的 Skill 不应该依赖外部状态或修改全局环境。它应该是自包含的、可预测的、可复用的。</p>
+      <p>回到最初的那些痛点 —— Skill 太多、找不到合适的、不敢自己写。我希望你带走的是：<strong>Skill 并不神秘，它们只是结构化的 prompt</strong>。从你最小的痛点开始，写一个做好一件事的 Skill，然后组合它，迭代它。函数式思维会帮你写好它。</p>
+      <p>谢谢大家。进入 Q&A。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 12. BONUS TIPS ============ -->
+  <section class="slide" data-title="补充建议">
+    <p class="kicker">// 补充建议</p>
+    <h2 class="h2">三个补充建议</h2>
+    <div class="grid g3 mt-l">
+      <div class="card card-accent">
+        <h4>🧠 主动管理上下文</h4>
+        <p class="dim">别等 AI Agent 来替你管理。</p>
+        <p class="dim" style="margin-top:8px;"><strong>你更清楚哪些信息是关键</strong>，哪些可以丢弃。主动压缩、精简、策划。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🦾 AI 是杠杆</h4>
+        <p class="dim">不是大脑替代品。</p>
+        <p class="dim" style="margin-top:8px;">AI 应该 <strong>帮你更好地思考</strong> —— 收集信息、对比选项、执行。但思考本身？永远是你的工作。</p>
+      </div>
+      <div class="card card-accent">
+        <h4>💰 合适的模型，合适的任务</h4>
+        <p class="dim">别每个任务都用最贵的模型。</p>
+        <p class="dim" style="margin-top:8px;"><strong>~80% 的任务</strong> 不需要 Opus + thinking。默认用最强的 = <strong>巨大的预算浪费</strong>。</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>三个补充建议。前两个我已经提过 —— 主动管理你的上下文，记住 AI 是你思考的杠杆，而不是替代品。</p>
+      <p>第三个是 <strong>模型选择</strong>。我观察到一个常见模式：人们总是选最先进的模型 —— 比如 Opus —— 并且每个任务都开启扩展思考。这是巨大的预算浪费。</p>
+      <p>用 80/20 法则想想。<strong>你大约 80% 的日常任务不需要最贵的模型</strong>。写 commit message、做简单重构、生成样板代码 —— 更快更便宜的模型完全能胜任。把重型武器 —— Opus 级别的模型加上扩展思考 —— 留给那 20% 真正需要深度推理的任务：架构决策、复杂调试、精细的代码审查。</p>
+      <p>这直接关联 token 效率。<strong>最贵的 token 就是那些你根本不需要消耗的 token</strong>。把模型匹配到任务复杂度，是削减 AI 预算最简单的方式之一，而且不会牺牲质量。</p>
+      <p>好，进入 Q&A。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 13. Q&A ============ -->
+  <section class="slide" data-title="Q&A">
+    <div style="display:flex;align-items:center;justify-content:center;height:100%">
+      <p style="font-family:var(--font-mono);font-size:clamp(60px,10vw,120px);font-weight:800;color:var(--accent);margin:0;letter-spacing:-0.03em">Q <span style="color:var(--text-3)">&amp;</span> A</p>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">#问答</span>
+      <span class="slide-number" data-current="13" data-total="13"></span>
+    </div>
+    <aside class="notes">
+      <p>好，以上就是我今天要分享的全部内容。<strong>问题、评论、反对意见 —— 都欢迎</strong>。</p>
+      <p>如果现在没有什么想到的，欢迎之后找我聊。我随时乐意讨论 Skill、函数式设计或 Token 效率。</p>
+      <p>谢谢大家！</p>
+    </aside>
+  </section>
+
+</div>
+
+<div style="position:fixed;bottom:12px;left:12px;font-size:11px;color:#484f5866;z-index:100;pointer-events:none">
+  S 演讲者视图 · T 切换主题 · ← → 导航 · F 全屏 · O 概览 · R 重置计时
+</div>
+
+<script src="../../../assets/runtime.js"></script>
+</body>
+</html>
