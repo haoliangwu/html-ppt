@@ -162,22 +162,22 @@
         </p>
         <ul style="font-size:13px;color:var(--text-2);padding-left:18px;margin-top:8px;line-height:1.8">
           <li><strong>using-bitbucket-cli</strong> — fetch PR data</li>
-          <li><strong>requesting-code-review</strong> — describe review flow (abstract away "where data comes from")</li>
           <li><strong>java-best-practices</strong> — review strategy (code conventions, tech stack, performance, security)</li>
+          <li><strong>requesting-code-review</strong> — describe review flow (abstract away "where data comes from and how to review")</li>
         </ul>
         <p class="dim" style="margin-top:10px;font-size:12px;color:var(--text-3)">Switch to GitHub? Swap Bitbucket CLI for GitHub CLI. Switch to Python? Swap review strategy skill. Other skills: zero changes.</p>
       </div>
     </div>
     <div class="card mt-m" style="text-align:center">
-      <p class="dim"><strong class="accent">💡 AI inference is the key</strong> — it sees "review this Java PR" and automatically loads <span class="mono">requesting-code-review</span> + <span class="mono">using-bitbucket-cli</span> + <span class="mono">java-best-practices</span></p>
+      <p class="dim"><strong class="accent">💡 AI inference is the key</strong> — it sees "review this Java PR" and automatically loads <span class="mono">using-bitbucket-cli</span> + <span class="mono">java-best-practices</span> + <span class="mono">requesting-code-review</span></p>
     </div>
     <aside class="notes">
       <p>OK, let me validate everything I just said with a real example. This is a code review scenario I actually use.</p>
       <p>On the left — the non-functional design — that was my first approach. I wrote one giant skill that covered everything from "how to fetch a PR from Bitbucket" to "how to parse diffs" to "how to generate review comments," all in one file. Then what happened?</p>
       <p><strong>A month later I needed to review a GitHub repo</strong>. The skill was useless — the "fetch PR" part was hardcoded for Bitbucket's API. I had to either rewrite the whole skill or create a new GitHub version. Both meant tons of duplicated effort.</p>
-      <p>On the right is the refactored version. I split it into <strong>three skills</strong>: <em>one handles "fetching external data" (Bitbucket CLI), one handles "the review process" (requesting-code-review), and a third one handles "review strategy" (java-best-practices)</em>.</p>
+      <p>On the right is the refactored version. I split it into <strong>three skills</strong>: <em>one handles "fetching external data" (Bitbucket CLI), one handles "review strategy" (java-best-practices), and a third one handles "the review process" (requesting-code-review)</em>.</p>
       <p>Why the third one? Because reviewing code isn't just about checking syntax — <strong>you need a strategy</strong>. For Java, that might mean checking code conventions, tech stack constraints, performance patterns, and security concerns. The review flow skill is generic — it describes <em>how</em> to review. But <strong>java-best-practices</strong> describes <em>what</em> to look for. Two different responsibilities.</p>
-      <p>How does the AI know to load all three? Through inference. The AI sees your task description mentions Java review and PR, and automatically loads <strong>requesting-code-review</strong> for the flow, <strong>using-bitbucket-cli</strong> for the data, and <strong>java-best-practices</strong> for the review strategy.</p>
+      <p>How does the AI know to load all three? Through inference. The AI sees your task description mentions Java review and PR, and automatically loads <strong>using-bitbucket-cli</strong> for the data, <strong>java-best-practices</strong> for the review strategy, and <strong>requesting-code-review</strong> for the flow.</p>
       <p>The result? Flexibility. When the project migrates to GitHub, I just swap <strong>using-bitbucket-cli</strong> for <strong>using-gh-cli</strong>. When reviewing a Python project, I swap <strong>java-best-practices</strong> for a Python review strategy skill. The core review flow skill never changes. This flexibility isn't something you design extra — it <em>emerges from decomposition</em>. Single responsibility naturally gives you replaceability.</p>
       <p>That's the core message: <strong>skill design isn't about making the most "capable" skill — it's about making the most "decomposable" one</strong>. Because pure skills compose into real power.</p>
     </aside>
