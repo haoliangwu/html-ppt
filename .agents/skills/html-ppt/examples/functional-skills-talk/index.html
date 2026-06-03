@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" data-themes="engineering-whiteprint,catppuccin-mocha,tokyo-night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Functional Skills — Designing AI Agent Skills with Functional Thinking</title>
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="../../assets/base.css">
+<link rel="stylesheet" id="theme-link" href="../../assets/themes/engineering-whiteprint.css">
+<link rel="stylesheet" href="../../assets/animations/animations.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="tpl-presenter-mode-reveal">
+<div class="deck">
+
+  <!-- ============ 1. COVER ============ -->
+  <section class="slide" data-title="Cover">
+    <p class="kicker">AI Agent Skills · token efficiency · 30 min</p>
+    <h1 class="h1 anim-fade-up" data-anim="fade-up">Functional<br><span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">Skills</span></h1>
+    <p class="lede mt-m">Designing AI Agent Skills with Functional Thinking<br>Single Responsibility · Composable · Side-Effect Free</p>
+    <div class="speaker">
+      <img src="../../assets/avatar.png" class="av" style="width:42px;height:42px;border-radius:50%;object-fit:cover">
+      <div><b>@lyon</b><span>ESDD · AI Tech Sharing · 2026</span></div>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">#functional #skills #ai-agent #token-efficiency</span>
+      <span class="slide-number" data-current="1" data-total="13"></span>
+    </div>
+    <aside class="notes">
+      <p>Hey everyone, I'm lyon. Today I want to talk about something I've been exploring over the last six months — <strong>how to use AI Agent Skills more efficiently</strong>.</p>
+      <p>This isn't your typical AI talk. I won't teach you prompt engineering, and I won't explain what MCP is. My angle is <strong>"design thinking"</strong> — specifically, <em>how to apply functional programming principles to design and compose your skills</em>.</p>
+      <p>Why this angle? Because I see most people using skills in a very reactive way: download a bunch, try them, they don't fit, try others, give up. The root cause isn't that there aren't enough skills — it's that <strong>we misunderstand what skills fundamentally are</strong>. They're not magic. They're just "structured prompts."</p>
+      <p>Today in 30 minutes, I'll start from two core functional principles — <strong>single responsibility</strong> and <strong>composition</strong> — and use real examples to show how this mindset produces skills that are dramatically more effective. I'll also share my daily workflow, so you can take something practical home.</p>
+      <p>Let's go.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 2. THE PROBLEM ============ -->
+  <section class="slide" data-title="The Problem">
+    <p class="kicker">// opening · the problem</p>
+    <h2 class="h2">Sound familiar?</h2>
+    <div class="grid g2 mt-l">
+      <div class="card card-accent">
+        <h4>🔍 Can't find the right skill</h4>
+        <p class="dim">Too many skills, docs are too long to read. The one you find needs tweaking before it works.</p>
+      </div>
+      <div class="card card-accent">
+        <h4>✍️ Afraid to write your own</h4>
+        <p class="dim">Skills feel complex and mysterious. But they're really <strong>just structured prompts</strong>.</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🔧 Others' skills don't quite fit</h4>
+        <p class="dim">Downloaded skills always miss something. In many cases, <em>writing your own is faster</em>.</p>
+      </div>
+      <div class="card card-accent">
+        <h4>💸 Trial-and-error is expensive</h4>
+        <p class="dim">Each bad skill attempt = wasted tokens. Low quality → repeated tasks → wasted tokens.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>Quick show of hands — how many of you use skills regularly? How many have written one?</p>
+      <p>OK. What I observe is that most people use skills, but very few write them. Why? I think there are four pain points.</p>
+      <p>First, <strong>there are too many skills</strong>. You open a skill repo and there are hundreds. Each one has long docs. Humans are lazy — we're not going to read through all of them.</p>
+      <p>Second, <strong>even when you find one, it might not work out of the box</strong>. You try it, it doesn't fit your use case, you spend more time adjusting it.</p>
+      <p>Third, and this is the one I think matters most — <strong>people mystify skills</strong>. They think writing a skill requires some special expertise. But a skill is just a prompt with structure. If you can write a prompt, you can write a skill.</p>
+      <p>Fourth, <strong>the trial-and-error cost is high</strong>. A poorly designed skill might contain hundreds of lines. Every time you use it, the AI has to read all of it. If the quality is low, you end up re-doing tasks — each redo is another round of token consumption. That's why skill quality is directly linked to token efficiency.</p>
+      <p>Today my answer focuses on pain points three and four — <strong>how to design skills that are pure, effective, and whose power multiplies when composed</strong>. The answer is functional thinking.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 3. DEMYSTIFY ============ -->
+  <section class="slide" data-title="Demystify">
+    <p class="kicker">// part 01 · demystify</p>
+    <h2 class="h2">A skill is just a <span class="accent">structured prompt</span>. <br> That's it.</h2>
+    <div class="stack mt-l">
+      <div class="rule-row">
+        <span class="num red">01</span>
+        <div>
+          <b>Reduces <span class="accent">repetitive prompt engineering</span></b>
+          <p class="dim">Write once, use everywhere. Maintain in one place — every consumer benefits from updates.</p>
+        </div>
+      </div>
+      <div class="rule-row">
+        <span class="num red">02</span>
+        <div>
+          <b>Enables <span class="accent">sharing and reuse</span></b>
+          <p class="dim">Encapsulate domain knowledge → others load it → works out of the box. No more everyone writing their own version.</p>
+        </div>
+      </div>
+      <div class="rule-row">
+        <span class="num red">03</span>
+        <div>
+          <b>Start from <span class="accent">the simplest thing</span></b>
+          <p class="dim">A 20-line skill is still a skill. Solve your smallest pain point first, iterate from there.</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>Before diving into functional thinking, I need to do one thing — <strong>demystify skills</strong>.</p>
+      <p>What's in a skill file? A system prompt, some trigger conditions, maybe some constraint rules. Fundamentally, it's no different from the system prompt you write in Cursor every day. The only difference: <strong>a skill has a format specification</strong> — where to put it, what metadata to include, how it's triggered.</p>
+      <p>What does this "structure" give you? Three things.</p>
+      <p>First, <strong>it eliminates repetitive prompt engineering</strong>. You know that feeling — every new project, every new conversation, you copy-paste the same long system prompt. Skills fix that. Load once, maintain centrally, update everywhere.</p>
+      <p>Second, <strong>sharing and reuse</strong>. You wrote a skill for handling Bitbucket PRs — your teammate needs the same capability. They just load it. No need to write from scratch. This is huge for team efficiency, because prompt engineering is highly personal — everyone's output quality varies significantly.</p>
+      <p>Third, and most important — <strong>start from the simplest thing</strong>. Many people think a skill needs to cover a complete workflow to be valuable. Wrong. A skill that does just one thing well — like "fetch git diff from CLI" — is already powerful when used correctly. Don't let the mysterious impression intimidate you.</p>
+      <p>OK, demystification done. Now let's get to the core: how functional thinking applies to skill design.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 4. FUNCTIONAL MAPPING ============ -->
+  <section class="slide" data-title="Functional Mapping">
+    <p class="kicker">// part 02 · functional thinking</p>
+    <h2 class="h2">Functional Thinking<br>→ Skill Design</h2>
+    <div class="grid g2 mt-l">
+      <div class="card card-accent">
+        <h4>🧩 Single Responsibility</h4>
+        <p class="dim">A function does one thing, and does it well.</p>
+        <div class="divider" style="margin:12px 0"></div>
+        <p class="dim"><strong>→ One skill covers one domain</strong>, and does it well.</p>
+        <p class="dim" style="margin-top:8px; font-size: 12px;;font-size:13px;color:var(--text-3)">A "do-everything" skill = hard to maintain, reuse, compose</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🔗 Composition</h4>
+        <p class="dim">Complex behavior emerges from composing simple functions.</p>
+        <div class="divider" style="margin:12px 0"></div>
+        <p class="dim"><strong>→ Two simple skills composed = a more powerful skill</strong></p>
+        <p class="dim" style="margin-top:8px; font-size: 12px;;font-size:13px;color:var(--text-3)">AI automatically infers which skills to load for a given task</p>
+      </div>
+    </div>
+    <p class="lede mt-l tc" style="text-align: left;">"<span class="accent">Write your skills like pure functions</span><br>&nbsp;&nbsp; — single responsibility, composable, side-effect free"</p>
+    <aside class="notes">
+      <p>The two core principles of functional programming — I'm sure most of you are familiar with them. What surprised me is how few people apply them to skill design.</p>
+      <p><strong>First: single responsibility</strong>. A function does one thing, and does it well. In the skill world, this means one skill covers one business domain. I've seen too many "mega-skills" — like one called "full-stack dev assistant" that crams frontend, backend, database, deployment, testing… all into one file. What happens? <em>The AI has to read thousands of lines every time</em>, and those instructions might even contradict each other. Maintenance is a nightmare.</p>
+      <p><strong>Second: composition</strong>. In the functional world, complex behavior doesn't come from writing complex functions — it comes from composing simple ones. In the skill world, two sufficiently simple and pure skills compose into something more powerful. And here's what might be the most important insight today — <strong>the AI automatically infers which skills to load</strong>.</p>
+      <p>It sees "review this PR" in your task description and loads the code review skill. It sees "fetch from Bitbucket" and loads the Bitbucket CLI skill. This inference capability is enabled by your functional design — because each skill's responsibility boundary is clear enough for the AI to accurately judge "which one applies here."</p>
+      <p>Let me demonstrate with a real case study.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 5. CASE STUDY ============ -->
+  <section class="slide" data-title="Case Study">
+    <p class="kicker">// part 02 · case study</p>
+    <h2 class="h2">Code Review Case:<br><span class="accent">Two Designs</span></h2>
+    <div class="grid g2 mt-l">
+      <div class="card" style="border-left: 4px solid var(--bad)">
+        <h4 style="color:var(--warn)">❌ Non-Functional</h4>
+        <p class="dim" style="font-size:14px;line-height:1.7">
+          One <span class="mono">"mega"</span> code review skill:
+        </p>
+        <ul style="font-size:13px;color:var(--text-2);padding-left:18px;margin-top:8px;line-height:1.8">
+          <li>Fetch PR diff from Bitbucket</li>
+          <li>Parse diff files</li>
+          <li>Analyze against local codebase</li>
+          <li>Generate review comments</li>
+          <li>...all in one file</li>
+        </ul>
+        <p class="dim" style="margin-top:10px;font-size:12px;color:var(--text-3)">Switch to GitHub? Rewrite. Change review strategy? Rewrite.</p>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--good)">
+        <h4 style="color:var(--good)">✅ Functional</h4>
+        <p class="dim" style="font-size:14px;line-height:1.7">
+          Split into <span class="mono">three</span> independent skills:
+        </p>
+        <ul style="font-size:13px;color:var(--text-2);padding-left:18px;margin-top:8px;line-height:1.8">
+          <li><strong>using-bitbucket-cli</strong> — fetch PR data</li>
+          <li><strong>requesting-code-review</strong> — describe review flow (abstract away "where data comes from")</li>
+          <li><strong>java-best-practices</strong> — review strategy (code conventions, tech stack, performance, security)</li>
+        </ul>
+        <p class="dim" style="margin-top:10px;font-size:12px;color:var(--text-3)">Switch to GitHub? Swap Bitbucket CLI for GitHub CLI. Switch to Python? Swap review strategy skill. Other skills: zero changes.</p>
+      </div>
+    </div>
+    <div class="card mt-m" style="text-align:center">
+      <p class="dim"><strong class="accent">💡 AI inference is the key</strong> — it sees "review this Java PR" and automatically loads <span class="mono">requesting-code-review</span> + <span class="mono">using-bitbucket-cli</span> + <span class="mono">java-best-practices</span></p>
+    </div>
+    <aside class="notes">
+      <p>OK, let me validate everything I just said with a real example. This is a code review scenario I actually use.</p>
+      <p>On the left — the non-functional design — that was my first approach. I wrote one giant skill that covered everything from "how to fetch a PR from Bitbucket" to "how to parse diffs" to "how to generate review comments," all in one file. Then what happened?</p>
+      <p><strong>A month later I needed to review a GitHub repo</strong>. The skill was useless — the "fetch PR" part was hardcoded for Bitbucket's API. I had to either rewrite the whole skill or create a new GitHub version. Both meant tons of duplicated effort.</p>
+      <p>On the right is the refactored version. I split it into <strong>three skills</strong>: <em>one handles "fetching external data" (Bitbucket CLI), one handles "the review process" (requesting-code-review), and a third one handles "review strategy" (java-best-practices)</em>.</p>
+      <p>Why the third one? Because reviewing code isn't just about checking syntax — <strong>you need a strategy</strong>. For Java, that might mean checking code conventions, tech stack constraints, performance patterns, and security concerns. The review flow skill is generic — it describes <em>how</em> to review. But <strong>java-best-practices</strong> describes <em>what</em> to look for. Two different responsibilities.</p>
+      <p>How does the AI know to load all three? Through inference. The AI sees your task description mentions Java review and PR, and automatically loads <strong>requesting-code-review</strong> for the flow, <strong>using-bitbucket-cli</strong> for the data, and <strong>java-best-practices</strong> for the review strategy.</p>
+      <p>The result? Flexibility. When the project migrates to GitHub, I just swap <strong>using-bitbucket-cli</strong> for <strong>using-gh-cli</strong>. When reviewing a Python project, I swap <strong>java-best-practices</strong> for a Python review strategy skill. The core review flow skill never changes. This flexibility isn't something you design extra — it <em>emerges from decomposition</em>. Single responsibility naturally gives you replaceability.</p>
+      <p>That's the core message: <strong>skill design isn't about making the most "capable" skill — it's about making the most "decomposable" one</strong>. Because pure skills compose into real power.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 6. DAILY: TOKEN EFFICIENCY + CODING ============ -->
+  <section class="slide" data-title="Token Efficiency & Coding">
+    <p class="kicker">// part 03 · daily skills · token & coding</p>
+    <h2 class="h2">Token Efficiency &amp; <span class="accent">Coding Skills</span></h2>
+    <div class="grid g3 mt-l">
+      <div class="card card-accent">
+        <h4>⚡ Token Efficiency</h4>
+        <p class="dim"><span class="mono">caveman</span> — Cuts ~75% of output tokens while keeping full technical accuracy. My default for every conversation.</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🛠️ Coding</h4>
+        <ul style="font-size:13px;color:var(--text-2);padding-left:14px;margin:6px 0 0;line-height:1.7">
+          <li><span class="mono">brainstorming</span> — clarify requirements</li>
+          <li><span class="mono">writing-plans</span> — implementation plans</li>
+          <li><span class="mono">test-driven-development</span> — TDD</li>
+          <li><span class="mono">subagent-driven-development</span> — parallel agents</li>
+          <li><span class="mono">requesting-code-review</span> — code review</li>
+          <li><span class="mono">systematic-debugging</span> — debug</li>
+        </ul>
+      </div>
+      <div class="card card-accent">
+        <h4>✨ Refactoring</h4>
+        <p class="dim"><span class="mono">simplify</span> — Refactor recently written code for clarity and consistency without changing functionality.</p>
+        <p class="dim" style="margin-top:8px; font-size: 12px;"><span class="mono">clonedeps</span> — inspect dependency source code locally.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>Now let me share something practical — <strong>the skills I use every day</strong>, organized by category.</p>
+      <p>First, <strong>Token Efficiency</strong>. This one's simple but powerful — <code>caveman</code> compresses output by about 75% while keeping full technical accuracy. It's my default — I turn it on at the start of every conversation. If you take nothing else from today, try this one tomorrow.</p>
+      <p>Second, <strong>Coding</strong>. This is where I spend most of my time. I use the Superpowers skill pack, which gives me a composable development methodology. Each skill does one thing — <code>brainstorming</code> for clarifying requirements, <code>writing-plans</code> for planning, <code>test-driven-development</code> for TDD, <code>subagent-driven-development</code> for running parallel agents, <code>requesting-code-review</code> for reviews, and <code>systematic-debugging</code> for debugging.</p>
+      <p>Two extras: <code>simplify</code> for refactoring code for clarity after writing it, and <code>clonedeps</code> for pulling dependency source code locally so you can inspect library internals.</p>
+      <p>Notice the pattern — <strong>each skill handles one phase of the development cycle</strong>. You load only what you need, when you need it.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 7. DAILY: CONTEXT & HARNESS ============ -->
+  <section class="slide" data-title="Context & Harness">
+    <p class="kicker">// part 03 · daily skills · context & harness</p>
+    <h2 class="h2">Context &amp;&nbsp;<span class="accent">Harness</span></h2>
+    <p class="lede" style="margin-bottom:16px">Give your agent the ability to <strong>pull context from internal systems</strong> — the more declarative, the higher the ceiling.</p>
+    <div class="grid g3 mt-s">
+      <div class="card card-accent">
+        <h4>🔌 Source Control</h4>
+        <p class="dim"><span class="mono">using-bitbucket-cli</span></p>
+        <p class="dim"><span class="mono">using-gh-cli</span></p>
+        <p class="dim" style="margin-top:6px;font-size:12px">One CLI per platform. Composable.</p>
+      </div>
+      <div class="card card-accent">
+        <h4>📋 PM & Communication</h4>
+        <p class="dim"><span class="mono">using-jira-cli</span></p>
+        <p class="dim"><span class="mono">using-confluence-cli</span></p>
+        <p class="dim"><span class="mono">using-mst-cli</span></p>
+        <p class="dim" style="margin-top:6px;font-size:12px">Pull tickets, docs & messages as context.</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🏗️ Harness</h4>
+        <p class="dim"><span class="mono">creating-agents-md</span></p>
+        <p class="dim" style="margin-top:8px; font-size: 12px;;font-size:12px">Generate AGENTS.md files that follow best practices. Make your project AI-ready in one skill.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>Next category — <strong>Context and Harness</strong>. This is about giving your agent the ability to pull information from your internal systems.</p>
+      <p>The context skills are all structured the same way — <strong>one CLI wrapper per system</strong>. Bitbucket, GitHub, Jira, Confluence, Microsoft Teams — each one is a standalone skill that knows how to talk to exactly one system. This is single responsibility in action.</p>
+      <p>Why does this matter? Because when a task says "review the PR from this Jira ticket," the AI can automatically infer it needs <code>using-jira-cli</code> to get ticket context and <code>using-bitbucket-cli</code> to get the code. You didn't hardcode that combination — it <em>emerges</em> from each skill's clear responsibility boundary.</p>
+      <p>And this is where the <strong>declarative principle</strong> kicks in — the more declarative your integration skills are, the higher the ceiling. Describe <em>what</em> you need, not <em>how</em> to get it. Let the AI figure out the "how."</p>
+      <p>Under Harness, <code>creating-agents-md</code> is a single-purpose skill that generates AGENTS.md files — making projects AI-ready. One skill, one job.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 8. DAILY: KNOWLEDGE BASE & MEMORY ============ -->
+  <section class="slide" data-title="Knowledge Base & Memory">
+    <p class="kicker">// part 03 · daily skills · knowledge</p>
+    <h2 class="h2">Knowledge Base &amp;&nbsp;<span class="accent">Memory</span></h2>
+    <div class="grid g3 mt-l">
+      <div class="card card-accent">
+        <h4>🔬 Deep Understanding</h4>
+        <p class="dim"><span class="mono">understand-anything</span></p>
+        <p class="dim" style="margin-top:8px; font-size: 12px;">Generate knowledge graphs from codebases & docs. Make sense of complex domains.</p>
+      </div>
+      <div class="card card-accent">
+        <h4>📦 Project Memory</h4>
+        <p class="dim"><span class="mono">using-memvid-cli</span></p>
+        <p class="dim" style="margin-top:8px; font-size: 12px;">Per-project compressed memory. Project-specific context on demand.</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🌐 Cross-Domain RAG</h4>
+        <p class="dim"><span class="mono">using-light-rag</span></p>
+        <p class="dim" style="margin-top:8px; font-size: 12px;">Cross-project, cross-domain knowledge retrieval. Recall how similar problems were solved elsewhere.</p>
+      </div>
+    </div>
+    <div class="card mt-m" style="text-align:center">
+      <p class="dim" style="font-size:14px"><strong class="accent">Three layers</strong>: deep understanding → project memory → cross-domain retrieval</p>
+    </div>
+    <aside class="notes">
+      <p>Next — <strong>Knowledge Base and Memory</strong>. This is where skills go beyond just "doing tasks" and start building institutional memory.</p>
+      <p>Three layers here. First, <code>understand-anything</code> — this generates knowledge graphs from codebases and documents. It's how I make sense of a new project or a complex domain. The output is an interactive graph, not just text.</p>
+      <p>Second, <code>using-memvid-cli</code> — per-project knowledge management. Once I understand a project, I store that understanding as a compressed memory that the agent can query later. Think of it as "project-specific context on demand."</p>
+      <p>Third, <code>using-light-rag</code> — this goes beyond a single project. It manages knowledge across projects and domains. When I need to recall how a similar problem was solved in another codebase, this is where I look.</p>
+      <p>Notice the layered architecture — <strong>deep understanding feeds project memory, which feeds cross-domain retrieval</strong>. Each layer is a separate skill with a clear boundary. You can use them independently or compose them.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 9. DAILY: AUTHORING ============ -->
+  <section class="slide" data-title="Authoring & Skill Creation">
+    <p class="kicker">// part 03 · daily skills · authoring</p>
+    <h2 class="h2">Authoring &amp;&nbsp;<span class="accent">Skill Creation</span></h2>
+    <div class="grid g2 mt-l">
+      <div class="card card-accent">
+        <h4>📄 Documents</h4>
+        <ul style="font-size:13px;color:var(--text-2);padding-left:14px;line-height:1.8">
+          <li><span class="mono">Kami</span> — Typeset professional documents (reports, whitepapers, resumes)</li>
+          <li><span class="mono">html-ppt</span> — Generate HTML slide decks <em>(like this one!)</em></li>
+        </ul>
+      </div>
+      <div class="card card-accent">
+        <h4>🛠️ Skill Creation</h4>
+        <ul style="font-size:13px;color:var(--text-2);padding-left:14px;line-height:1.8">
+          <li><span class="mono">skill-creator</span> — Create and optimize new skills</li>
+          <li><span class="mono">reviewing-skill</span> — Review and validate skills</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card mt-m" style="text-align:center">
+      <p class="dim" style="font-size:14px"><strong class="accent">Meta-skills</strong>: skills that create and validate other skills. The Ouroboros of skill engineering.</p>
+    </div>
+    <aside class="notes">
+      <p>Last category — <strong>Authoring</strong>. These are skills that produce outputs, not just process inputs.</p>
+      <p><code>Kami</code> generates typeset professional documents — reports, whitepapers, one-pagers. <code>html-ppt</code> generates slide decks — in fact, <em>this very deck was created using html-ppt</em>. So you're looking at the output of the thing I'm describing. Very meta.</p>
+      <p>Then there are the meta-skills — <code>skill-creator</code> for creating new skills, and <code>reviewing-skill</code> for validating them. These are skills that operate on skills themselves. The Ouroboros of skill engineering.</p>
+      <p>The important thing here is that <strong>authoring skills follow the same single-responsibility principle</strong>. Kami does documents, html-ppt does slides, skill-creator does skills. They don't overlap. They compose when you need a pipeline — like "research a topic → generate a report → create a slide deck."</p>
+    </aside>
+  </section>
+
+  <!-- ============ 10. COMPOSABLE WORKFLOWS ============ -->
+  <section class="slide" data-title="Composable Workflows">
+    <p class="kicker">// part 03 · composable workflows</p>
+    <h2 class="h2">Composable <span class="accent">Workflows</span></h2>
+    <div class="stack mt-m">
+      <div class="agenda-row">
+        <span class="num" style="color:var(--accent-2)">A</span>
+        <span class="t" style="font-size:14px">Standard superpowers</span>
+        <span class="d"><span class="mono" style="font-size:11px">brainstorming → writing-plans → subagent-driven-dev → requesting-code-review → simplify</span></span>
+      </div>
+      <div class="agenda-row">
+        <span class="num" style="color:var(--accent-2)">B</span>
+        <span class="t" style="font-size:14px">Bug fix from Jira</span>
+        <span class="d"><span class="mono" style="font-size:11px">using-jira-cli → using-memvid-cli → tdd → requesting-code-review → simplify</span></span>
+      </div>
+      <div class="agenda-row">
+        <span class="num" style="color:var(--accent-2)">C</span>
+        <span class="t" style="font-size:14px">PR review on GitHub</span>
+        <span class="d"><span class="mono" style="font-size:11px">using-gh-cli + requesting-code-review</span></span>
+      </div>
+      <div class="agenda-row">
+        <span class="num" style="color:var(--accent-2)">D</span>
+        <span class="t" style="font-size:14px">Feature from Confluence</span>
+        <span class="d"><span class="mono" style="font-size:11px">using-confluence-cli → using-light-rag → brainstorming → writing-plans → subagent-driven-dev → code-review → simplify</span></span>
+      </div>
+      <div class="agenda-row">
+        <span class="num" style="color:var(--accent-2)">E</span>
+        <span class="t" style="font-size:14px">Tech research + doc</span>
+        <span class="d"><span class="mono" style="font-size:11px">brainstorming → understand-anything → Kami</span></span>
+      </div>
+      <div class="agenda-row">
+        <span class="num" style="color:var(--accent-2)">F</span>
+        <span class="t" style="font-size:14px">Skill creation</span>
+        <span class="d"><span class="mono" style="font-size:11px">skill-creator + reviewing-skill</span></span>
+      </div>
+      <div class="agenda-row">
+        <span class="num" style="color:var(--accent-2)">G</span>
+        <span class="t" style="font-size:14px">Project AI adaption</span>
+        <span class="d"><span class="mono" style="font-size:11px">creating-agents-md</span></span>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>Here's where composition really shines. These are the actual workflows I use every day — <strong>each one is just a sequence of simple, single-responsibility skills</strong>.</p>
+      <p>Workflow A is the standard superpowers flow for feature development. Brainstorm to clarify, plan to decompose, execute with parallel agents, review, then simplify.</p>
+      <p>Workflow B is my bug-fix flow. Pull context from Jira, recall project knowledge from memvid, write tests first with TDD, review, simplify.</p>
+      <p>Workflow C is the simplest — just two skills composed. Fetch from GitHub, then review. That's it. Two skills, one job.</p>
+      <p>Workflow D is the most complex — a feature request that starts from Confluence docs, enriches with cross-domain knowledge from LightRAG, then goes through the full development cycle.</p>
+      <p>Workflow E is research-oriented — brainstorm a question, understand it deeply with knowledge graphs, then generate a polished document with Kami.</p>
+      <p>And Workflow F is meta — creating skills with skills.</p>
+      <p>Workflow G is about <strong>project AI adaption</strong> — using <code>creating-agents-md</code> to generate an AGENTS.md file that makes any project immediately AI-ready. One skill, one job: bridge the gap between your codebase and your AI agent.</p>
+      <p>Notice something: <strong>every workflow is just a different combination of the same small set of skills</strong>. The skills don't change — the composition changes. That's the power of functional design.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 11. BONUS TIPS ============ -->
+  <section class="slide" data-title="Bonus Tips">
+    <p class="kicker">// bonus tips</p>
+    <h2 class="h2">Three more tips</h2>
+    <div class="grid g3 mt-l">
+      <div class="card card-accent">
+        <h4>🧠 Actively manage context</h4>
+        <p class="dim">Don't wait for the AI Agent to manage it for you.</p>
+        <p class="dim" style="margin-top:8px; font-size: 12px;"><strong>You know better which information is critical</strong> and which can be discarded. Proactively compress, trim, curate.</p>
+      </div>
+      <div class="card card-accent">
+        <h4>🦾 AI is a lever</h4>
+        <p class="dim">Not a brain replacement.</p>
+        <p class="dim" style="margin-top:8px; font-size: 12px;">AI should <strong>help you think better</strong> — gather info, compare options, execute. But thinking itself? Always your job.</p>
+      </div>
+      <div class="card card-accent">
+        <h4>💰 Right model, right task</h4>
+        <p class="dim">Don't nuke every task with the most expensive model.</p>
+        <p class="dim" style="margin-top:8px; font-size: 12px;"><strong>~80% of tasks</strong> don't need Opus + thinking. Defaulting to max = <strong>massive budget waste</strong>.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>Three bonus tips before I wrap up. The first two I've mentioned — actively manage your context, and remember that AI is a lever for your thinking, not a replacement for it.</p>
+      <p>The third one is about <strong>model selection</strong>. I see a common pattern: people always pick the most advanced model — like Opus — and enable extended thinking for every single task. That's a huge waste of budget.</p>
+      <p>Think about it with the 80/20 rule. <strong>About 80% of your daily tasks don't require the most expensive model</strong>. Writing a commit message, running a simple refactor, generating boilerplate — a faster, cheaper model handles these just fine. Reserve the heavy artillery — the Opus-level models with extended thinking — for the 20% of tasks that actually need deep reasoning: architectural decisions, complex debugging, nuanced code reviews.</p>
+      <p>This is directly related to token efficiency. <strong>The most expensive token is the one you didn't need to spend</strong>. Matching model to task complexity is one of the easiest ways to cut your AI budget without sacrificing quality.</p>
+      <p>OK, last slide.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 12. CLOSING ============ -->
+  <section class="slide" data-title="Closing">
+    <p class="kicker">// closing</p>
+    <h2 class="h2">One takeaway</h2>
+    <div class="card mt-l" style="text-align:center;padding:40px 32px">
+      <p style="font-family:var(--font-mono);font-size:clamp(28px,3vw,44px);font-weight:700;color:var(--accent);margin:0 0 16px 0">
+        "Use your skills like<br><span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">pure functions</span>"
+      </p>
+      <div class="grid g3" style="margin-top:24px;gap:16px">
+        <div class="card" style="text-align:center;padding:16px">
+          <span style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);font-weight:700">fn single()</span>
+          <p style="font-size:14px;color:var(--text-2);margin:4px 0 0">Single Responsibility</p>
+        </div>
+        <div class="card" style="text-align:center;padding:16px">
+          <span style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);font-weight:700">compose(a, b)</span>
+          <p style="font-size:14px;color:var(--text-2);margin:4px 0 0">Composable</p>
+        </div>
+        <div class="card" style="text-align:center;padding:16px">
+          <span style="font-family:var(--font-mono);font-size:13px;color:var(--accent-2);font-weight:700">pure(fn)</span>
+          <p style="font-size:14px;color:var(--text-2);margin:4px 0 0">Side-Effect Free</p>
+        </div>
+      </div>
+    </div>
+    <p class="lede tc mt-l">Back to the original question: <strong>skills aren't mysterious. Start simple, decompose with functional thinking, compose for power.</strong></p>
+    <div class="deck-footer">
+      <span class="mono">#functional #skills #thanks</span>
+      <span class="slide-number" data-current="12" data-total="13"></span>
+    </div>
+    <aside class="notes">
+      <p>If you remember only one thing today, it's this — <strong>"write your skills like pure functions."</strong></p>
+      <p>This has three layers. First, <strong>single responsibility</strong> — one skill does one thing, covers one domain, does it well. No "do-everything" skills.</p>
+      <p>Second, <strong>composable</strong> — two simple skills composed together, the power isn't additive, it's multiplicative. Because the AI automatically infers which skills to load, you don't need to manually orchestrate.</p>
+      <p>Third, <strong>side-effect free</strong> — this is also important in functional thinking. A good skill shouldn't depend on external state or modify the global environment. It should be self-contained, predictable, and reusable.</p>
+      <p>Going back to the original frustration — too many skills, can't find the right one, afraid to write your own. What I want you to take away is: <strong>skills aren't mysterious, they're just structured prompts</strong>. Start from your smallest pain point, write a skill that does one thing well, then compose it, iterate it. Functional thinking will help you write it right.</p>
+      <p>Thanks for listening. Let's move to Q&A.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 13. Q&A ============ -->
+  <section class="slide" data-title="Q&A">
+    <div style="display:flex;align-items:center;justify-content:center;height:100%">
+      <p style="font-family:var(--font-mono);font-size:clamp(60px,10vw,120px);font-weight:800;color:var(--accent);margin:0;letter-spacing:-0.03em">Q <span style="color:var(--text-3)">&amp;</span> A</p>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">#qanda</span>
+      <span class="slide-number" data-current="13" data-total="13"></span>
+    </div>
+    <aside class="notes">
+      <p>OK, that's all I have for today. <strong>Questions, comments, pushback — all welcome</strong>.</p>
+      <p>If nothing comes to mind right now, feel free to find me later. I'm always happy to chat about skills, functional design, or token efficiency.</p>
+      <p>Thanks everyone!</p>
+    </aside>
+  </section>
+
+</div>
+
+<div style="position:fixed;bottom:12px;left:12px;font-size:11px;color:#484f5866;z-index:100;pointer-events:none">
+  S Presenter View · T Cycle Theme · ← → Navigate · F Fullscreen · O Overview · R Reset Timer
+</div>
+
+<script src="../../assets/runtime.js"></script>
+</body>
+</html>
