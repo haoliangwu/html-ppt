@@ -27,11 +27,7 @@
       <span class="slide-number" data-current="1" data-total="13"></span>
     </div>
     <aside class="notes">
-      <p>大家好，我是 Lyon。今天想和大家聊聊，我近半年来一直在探索的一个话题 —— <strong>如何更高效地使用 AI Agent Skill</strong>。</p>
-      <p>这不是一场典型的 AI 技术分享。我不会教你 prompt engineering 的技巧，也不会解释 MCP 是什么。我的切入角度是 <strong>"设计思维"</strong> —— 具体来说，<em>如何用函数式编程的原则来设计和组合你的 Skill</em>。</p>
-      <p>为什么选这个角度？因为我看到大多数人使用 Skill 的方式非常被动：下载一堆，试试看，不合适就换，最后放弃。根本原因不是 Skill 不够多 —— 而是 <strong>我们对 Skill 的本质有误解</strong>。Skill 不是什么魔法，它们只是"结构化的 prompt"。</p>
-      <p>今天 30 分钟，我会从两个核心的函数式原则出发 —— <strong>单一职责</strong> 和 <strong>组合</strong> —— 用实际案例展示这种思维方式如何让 Skill 效率成倍提升。我也会分享我的日常工作流，让你带走一些实用的东西。</p>
-      <p>现在开始吧。</p>
+      <p>大家下午好，我是 ESDD 部门的 Lyon。首先感谢 Zhe 邀请我今天来到这里。今天的分享我不会讲 Skills 或 AI/Agent 的任何基础知识，因为我相信在座各位都是这个领域的专家。我分享的是自己在日常工作中更高效使用 Skills 的实践经验和思考。</p>
     </aside>
   </section>
 
@@ -58,13 +54,12 @@
       </div>
     </div>
     <aside class="notes">
-      <p>举手示意一下 —— 有多少人日常在用 Skill？有多少人自己写过？</p>
-      <p>好。我观察到的情况是，大多数人用 Skill，但很少有人写 Skill。为什么？我认为有四个痛点。</p>
-      <p>第一，<strong>Skill 太多了</strong>。打开一个 Skill 仓库，几百个。每个都有长长的文档。人天生就懒 —— 我们不会去读完。</p>
-      <p>第二，<strong>就算找到，也可能不适用</strong>。试一下，不适合你的场景，花更多时间去调整。</p>
-      <p>第三，也是我觉得最关键的一点 —— <strong>人们把 Skill 神秘化了</strong>。觉得写 Skill 需要什么特殊的专业知识。但 Skill 就是一个有格式的 prompt。如果你会写 prompt，你就会写 Skill。</p>
-      <p>第四，<strong>试错成本很高</strong>。一个设计不好的 Skill 可能有几百行。每次使用，AI 都要全部读完。如果质量低，你就要反复重做 —— 每次重做都是一轮 token 消耗。所以 Skill 质量直接关联 token 效率。</p>
-      <p>今天我给出的答案聚焦在痛点三和四 —— <strong>如何设计出纯粹、高效、组合后威力倍增的 Skill</strong>。答案就是函数式思维。</p>
+      <p>我先问一个问题：大家日常工作中是怎么用 Skills 的？有没有遇到过以下问题？</p>
+      <p>1. 社区里的 Skills 太多了，找不到合适的</p>
+      <p>2. 找到的 Skill 不能开箱即用</p>
+      <p>3. 不敢自己写，不知道从何入手</p>
+      <p>4. 试错成本太高（尤其是用 Opus 的时候）</p>
+      <p>如果你遇到这些问题，我相信今天的分享会对你有帮助。</p>
     </aside>
   </section>
 
@@ -96,13 +91,8 @@
       </div>
     </div>
     <aside class="notes">
-      <p>在深入函数式思维之前，我需要做一件事 —— <strong>把 Skill 解构掉</strong>。</p>
-      <p>一个 Skill 文件里有什么？一段 system prompt，一些触发条件，也许还有一些约束规则。本质上，和你每天在 Cursor 里写的 system prompt 没有区别。唯一的区别：<strong>Skill 有格式规范</strong> —— 放在哪、有什么元数据、如何触发。</p>
-      <p>这个"结构"给了你什么？三样东西。</p>
-      <p>第一，<strong>消除了重复的 prompt engineering</strong>。你知道那种感觉 —— 每个新项目、每次新对话，都要复制粘贴一大段 system prompt。Skill 解决了这个问题。加载一次，集中维护，到处更新。</p>
-      <p>第二，<strong>共享和复用</strong>。你写了一个处理 Bitbucket PR 的 Skill —— 你的同事也需要同样的能力。直接加载就行，不需要从零写。这对团队效率提升巨大，因为 prompt engineering 非常个人化 —— 每个人的输出质量差异很大。</p>
-      <p>第三，也是最重要的 —— <strong>从最简单的开始</strong>。很多人觉得 Skill 得覆盖完整的工作流才有价值。错了。一个只做好一件事的 Skill —— 比如"从 CLI 获取 git diff" —— 用对了就已经很强大。别让神秘的印象吓到你。</p>
-      <p>好，解构完成。现在进入核心：函数式思维如何应用到 Skill 设计。</p>
+      <p>但说实话，我觉得 Skills 没有什么神秘的地方。一个 Skill 就是一个结构化的 prompt。如果你会写 prompt，你就会写 Skill。如果你知道怎么做好的 prompt，你就能用好 Skills。</p>
+      <p>Skill 的最大优势是因为有规范和标准，所以可以被分享和复用。而且我还建议你从最简单的东西开始写自己的 Skill，只要它能解决你的问题就可以。</p>
     </aside>
   </section>
 
@@ -128,11 +118,11 @@
     </div>
     <p class="lede mt-l tc" style="text-align: left;">"<span class="accent">像写纯函数一样写你的 Skill</span><br>&nbsp;&nbsp; — 单一职责、可组合、无副作用"</p>
     <aside class="notes">
-      <p>函数式编程的两个核心原则 —— 相信大家都很熟悉。让我意外的是，很少有人把它们应用到 Skill 设计上。</p>
-      <p><strong>第一：单一职责</strong>。一个函数只做一件事，并把它做好。在 Skill 世界里，就是一个 Skill 覆盖一个业务领域。我见过太多"巨无霸 Skill" —— 比如一个叫"全栈开发助手"的，把前端、后端、数据库、部署、测试……全塞进一个文件。结果呢？<em>AI 每次都要读几千行</em>，而且那些指令甚至可能互相冲突。维护起来简直是灾难。</p>
-      <p><strong>第二：组合</strong>。在函数式世界里，复杂行为不是靠写复杂函数得来的 —— 而是组合简单函数。在 Skill 世界里，两个足够简单纯粹的 Skill 组合在一起，威力远不止相加。而且今天可能最重要的一个洞察 —— <strong>AI 会自动推断该加载哪些 Skill</strong>。</p>
-      <p>它看到你的任务描述里有"review 这个 PR"，就加载代码审查 Skill。看到"从 Bitbucket 获取"，就加载 Bitbucket CLI Skill。这种推断能力，正是你函数式设计的结果 —— 因为每个 Skill 的责任边界足够清晰，AI 能准确判断"哪个 Skill 适用于此"。</p>
-      <p>用一个真实案例来演示。</p>
+      <p>我们来聊聊今天分享的核心：函数式思维。</p>
+      <p>重点在于，无论你在用什么 Skills 还是想创建新的，用函数式思维来指导你的工作都是一个好主意。</p>
+      <p>函数式思维的两个主要原则是单一职责和组合。</p>
+      <p>第一个很简单：一个函数只做一件事，并把它做好。所以在 Skill 的世界里，一个 Skill 应该覆盖一个领域，并把它做好。</p>
+      <p>第二个在函数式编程中更复杂，但核心思想是复杂行为是从简单函数的组合中涌现出来的。所以在 Skill 的世界里，两三个简单 Skills 组合起来就是一个更强大的 Skill。</p>
     </aside>
   </section>
 
@@ -172,14 +162,16 @@
       <p class="dim"><strong class="accent">💡 AI 推断是关键</strong> — 它看到"审查这个 Java PR"，就会自动加载 <span class="mono">using-bitbucket-cli</span> + <span class="mono">java-best-practices</span> + <span class="mono">requesting-code-review</span></p>
     </div>
     <aside class="notes">
-      <p>好，用我实际使用的一个真实案例来验证刚才说的一切。这是一个代码审查场景。</p>
-      <p>左边 —— 非函数式设计 —— 那是我最初的做法。我写了一个巨大的 Skill，把"如何从 Bitbucket 拉 PR"、"如何解析 diff"、"如何生成审查意见"全塞进一个文件。然后发生了什么？</p>
-      <p><strong>一个月后我要审查一个 GitHub 仓库</strong>。这个 Skill 完全废了 —— "拉取 PR"那部分硬编码了 Bitbucket 的 API。我要么重写整个 Skill，要么新建一个 GitHub 版本。两种都意味着大量的重复劳动。</p>
-      <p>右边是重构后的版本。我把它拆成 <strong>三个 Skill</strong>：<em>一个处理"获取外部数据"（Bitbucket CLI），一个处理"审查策略"（java-best-practices），第三个处理"审查流程"（requesting-code-review）</em>。</p>
-      <p>为什么要有第三个？因为审查代码不只是检查语法 —— <strong>你需要一个策略</strong>。对 Java 来说，可能意味着检查代码规范、技术栈约束、性能模式、安全问题。审查流程 Skill 是通用的 —— 它描述<em>如何</em>审查。但 <strong>java-best-practices</strong> 描述<em>审查什么</em>。两个不同的职责。</p>
-      <p>AI 怎么知道加载全部三个？通过推断。AI 看到你的任务描述提到 Java 审查和 PR，就自动加载 <strong>using-bitbucket-cli</strong> 获取数据，<strong>java-best-practices</strong> 获取审查策略，<strong>requesting-code-review</strong> 获取流程。</p>
-      <p>结果呢？灵活性。当项目迁移到 GitHub 时，我只需把 <strong>using-bitbucket-cli</strong> 换成 <strong>using-gh-cli</strong>。审查 Python 项目时，把 <strong>java-best-practices</strong> 换成 Python 审查策略 Skill。核心的审查流程 Skill 从不需要改动。这种灵活性不是你额外设计的 —— 它是<em>从分解中涌现出来的</em>。单一职责天然赋予你可替换性。</p>
-      <p>这就是核心信息：<strong>Skill 设计不在于做出"功能最强"的 Skill —— 而在于做出"最可分解"的 Skill</strong>。因为纯粹的 Skill 组合起来才是真正的力量。</p>
+      <p>这里有一个案例。假设你是一名开发人员，想审查一个 PR。你可以用以下 Skills 来完成：</p>
+      <p>左边这种设计把所有东西都耦合在一个 Skill 里，它能用但不高效也不易维护。</p>
+      <p>右边是更函数式的设计，把 Skill 拆成了三个部分：</p>
+      <p>1. 数据从哪来、怎么获取</p>
+      <p>2. 应该用什么样的审查标准</p>
+      <p>3. 怎么处理审查流程</p>
+      <p>因为在座的都是工程师或者有技术背景，所以我们可以很容易理解两者之间的区别。右边这种设计更灵活也更容易维护。</p>
+      <p>另一方面，我们可以尽可能利用 AI 的"推断"能力来理解我们的意图，自动加载合适的 Skills。</p>
+      <p>就这么简单实用。</p>
+      <p>然后我来分享一下我每天在工作中使用的 Skills。</p>
     </aside>
   </section>
 
@@ -210,11 +202,9 @@
       </div>
     </div>
     <aside class="notes">
-      <p>现在来分享一些实用的东西 —— <strong>我每天使用的 Skill</strong>，按类别整理。</p>
-      <p>首先是 <strong>Token 效率</strong>。这个简单但强大 —— <code>caveman</code> 压缩输出约 75%，同时保持完整技术准确度。这是我的默认设置 —— 每次对话一开始就打开。如果今天只能带走一样东西，明天试试这个。</p>
-      <p>其次是 <strong>编码</strong>。这是我花时间最多的地方。我用 Superpowers Skill 包，它给了我一整套可组合的开发方法论。每个 Skill 只做一件事 —— <code>brainstorming</code> 澄清需求，<code>writing-plans</code> 做计划，<code>test-driven-development</code> 做 TDD，<code>subagent-driven-development</code> 跑并行 agent，<code>requesting-code-review</code> 做审查，<code>systematic-debugging</code> 做调试。</p>
-      <p>还有两个额外的：<code>simplify</code> 在写完代码后用来重构，提升清晰度；<code>clonedeps</code> 把依赖源码拉到本地，直接查内部实现。</p>
-      <p>注意这个模式 —— <strong>每个 Skill 处理开发周期的一个阶段</strong>。需要什么加载什么，按需组合。</p>
+      <p>首先，Token 效率方面，我用 "caveman" skill 来压缩 AI 的输出。请注意这个 skill 关注的是压缩输出而非输入，因为输入的成本远低于输出的成本。</p>
+      <p>编码方面，我基本上每天都在用 "superpowers" skill 包，它是一个很强大的 skill 包，覆盖了从需求分析到代码审查的整个开发周期。</p>
+      <p>我还推荐大家使用 "simplify" skill 在写完代码后进行重构。它的作者和 OpenCode 中的 oh-my-opencode-slim 插件是同一人。我已经用了 OpenCode 一段时间，弃用了 Cursor，因为 OpenCode 开源而且配合 Rakuten 内部 LLM 更省钱。</p>
     </aside>
   </section>
 
@@ -244,11 +234,10 @@
       </div>
     </div>
     <aside class="notes">
-      <p>下一类 —— <strong>上下文和基础设施</strong>。这是让 agent 有能力从你的内部系统拉取信息。</p>
-      <p>上下文 Skill 的结构都一样 —— <strong>每个系统一个 CLI 封装</strong>。Bitbucket、GitHub、Jira、Confluence、Microsoft Teams —— 每个都是独立 Skill，精确知道如何和一个系统通信。这就是单一职责在行动。</p>
-      <p>为什么重要？因为当任务说"审查这个 Jira ticket 对应的 PR"，AI 能自动推断需要 <code>using-jira-cli</code> 获取 ticket 上下文，<code>using-bitbucket-cli</code> 获取代码。你没有硬编码那个组合 —— 它是<em>从每个 Skill 清晰的责任边界中涌现出来的</em>。</p>
-      <p>这里 <strong>声明式原则</strong> 起作用了 —— 你的集成 Skill 越声明式，上限越高。描述<em>你需要什么</em>，而不是<em>怎么获取</em>。让 AI 来搞定"怎么"。</p>
-      <p>基础设施下面，<code>creating-agents-md</code> 是一个单一用途的 Skill，生成 AGENTS.md 文件 —— 让项目适配 AI。一个 Skill，一份职责。</p>
+      <p>上下文方面，我建议每个人都去找或者写合适的 Skills 来把你的 AI Agent 和你工作中的内部系统连接起来。</p>
+      <p>为什么？一旦你做了这个，你就不需要在这里那里复制粘贴文本了，AI Agent 可以代替你解决问题。</p>
+      <p>这些是我每天使用的 Skills。</p>
+      <p>基础设施方面，我用 "creating-agents-md" skill 来更新和创建 AGENTS.md 文件。这是我几个月前写的第一个 skill，我根据社区文章和讨论已经迭代了好几次了。</p>
     </aside>
   </section>
 
@@ -277,11 +266,11 @@
       <p class="dim" style="font-size:14px"><strong class="accent">三层架构</strong>：深度理解 → 项目记忆 → 跨域检索</p>
     </div>
     <aside class="notes">
-      <p>接下来 —— <strong>知识库和记忆</strong>。这是 Skill 超越"做任务"、开始构建机构记忆的地方。</p>
-      <p>三层架构。第一层，<code>understand-anything</code> —— 从代码库和文档生成知识图谱。这是我在接手新项目或面对复杂领域时理清思路的方式。输出是交互式图谱，不只是文字。</p>
-      <p>第二层，<code>using-memvid-cli</code> —— 逐项目知识管理。等我理解了一个项目，我会把那层理解存储为压缩记忆，agent 之后可以查询。可以把它理解为"项目专属上下文，按需获取"。</p>
-      <p>第三层，<code>using-light-rag</code> —— 这超越了单个项目。它管理跨项目、跨领域的知识。当我需要回溯另一个代码库里相似问题是怎么解决的，就看这里。</p>
-      <p>注意这个分层架构 —— <strong>深度理解输入到项目记忆，项目记忆输入到跨域检索</strong>。每一层都是独立 Skill，边界清晰。可以独立使用，也可以组合。</p>
+      <p>知识库和记忆管理方面，我用这三种 Skills 分别满足不同的需求：</p>
+      <p>"understand-anything" 用来从代码库和文档生成知识图谱。</p>
+      <p>"using-memvid-cli" 用来保存与某个特定项目相关的知识。</p>
+      <p>"using-light-rag" 是配合 LightRAG 这个轻量级 RAG 框架使用的，用来检索多个项目和业务领域的知识。</p>
+      <p>有时候我听到有人说 RAG 已经死了，因为模型上下文窗口足够长，可以存储一切。但实际上，我们仍然需要通过语义搜索和向量存储来提供信息的准确性。</p>
     </aside>
   </section>
 
@@ -309,10 +298,8 @@
       <p class="dim" style="font-size:14px"><strong class="accent">元 Skill</strong>：创建和验证其他 Skill 的 Skill。Skill 工程的衔尾蛇。</p>
     </div>
     <aside class="notes">
-      <p>最后一类 —— <strong>创作</strong>。这些 Skill 产生输出，不只是处理输入。</p>
-      <p><code>Kami</code> 生成排版精美的文档 —— 报告、白皮书、一页纸。<code>html-ppt</code> 生成幻灯片 —— 实际上，<em>这份 deck 就是用 html-ppt 创建的</em>。所以你正在看的，就是我正在描述的东西的输出。非常元。</p>
-      <p>还有元 Skill —— <code>skill-creator</code> 创建新 Skill，<code>reviewing-skill</code> 验证 Skill。这些是操作 Skill 本身的 Skill。Skill 工程的衔尾蛇。</p>
-      <p>重要的是 <strong>创作 Skill 也遵循同样的单一职责原则</strong>。Kami 做文档，html-ppt 做幻灯片，skill-creator 做 Skill。互不重叠。当你需要一条流水线时 —— 比如"研究一个话题 → 生成报告 → 创建幻灯片" —— 它们自然组合在一起。</p>
+      <p>最后，我通常用 "Kami" 和 "html-ppt" skills 来创建文档和演示材料（比如这一份）。</p>
+      <p>还有元 skills "skill-creator" 和 "reviewing-skill" 用于 skill 创建任务。</p>
     </aside>
   </section>
 
@@ -358,15 +345,8 @@
       </div>
     </div>
     <aside class="notes">
-      <p>这就是组合真正发光的地方。这些是我每天实际使用的工作流 —— <strong>每个都只是一系列简单、单一职责的 Skill</strong>。</p>
-      <p>工作流 A 是标准 superpowers 功能开发流程：brainstorm 澄清需求，plan 分解任务，并行 agent 执行，review，最后 simplify。</p>
-      <p>工作流 B 是我的 bug 修复流程：从 Jira 拉取上下文，从 memvid 回溯项目知识，用 TDD 先写测试，review，simplify。</p>
-      <p>工作流 C 最简单 —— 只是两个 Skill 组合。从 GitHub 拉取，然后审查。就这样。两个 Skill，一件事。</p>
-      <p>工作流 D 是最复杂的 —— 一个从 Confluence 文档开始的功能需求，用 LightRAG 做跨域知识增强，然后走完整开发流程。</p>
-      <p>工作流 E 是研究导向的 —— brainstorm 一个问题，用知识图谱深入理解，然后用 Kami 生成精美文档。</p>
-      <p>工作流 F 是元的 —— 用 Skill 创建 Skill。</p>
-      <p>工作流 G 关于 <strong>项目 AI 适配</strong> —— 用 <code>creating-agents-md</code> 生成 AGENTS.md 文件，让任何项目都能立即适配 AI。一个 Skill，一份职责：桥接你的代码库和 AI agent。</p>
-      <p>注意：<strong>每个工作流只是同一小套 Skill 的不同组合</strong>。Skill 不变 —— 组合变化。这就是函数式设计的威力。</p>
+      <p>别忘了用函数式思维来设计你的 Skills 和工作流。</p>
+      <p>这里有一些例子。你会发现我们可以组合这些 Skills 来完成一个复杂任务，就像我们拥有了一个更强大的 Skill。</p>
     </aside>
   </section>
 
@@ -399,12 +379,8 @@
       <span class="slide-number" data-current="11" data-total="13"></span>
     </div>
     <aside class="notes">
-      <p>如果今天只能记住一件事，那就是 —— <strong>"像写纯函数一样写你的 Skill。"</strong></p>
-      <p>这有三层含义。第一，<strong>单一职责</strong> —— 一个 Skill 做一件事，覆盖一个领域，把它做好。不写"无所不能"的 Skill。</p>
-      <p>第二，<strong>可组合</strong> —— 两个简单 Skill 组合在一起，威力不是加法，是乘法。因为 AI 会自动推断该加载哪些 Skill，你不需要手动编排。</p>
-      <p>第三，<strong>无副作用</strong> —— 这在函数式思维中同样重要。一个好的 Skill 不应该依赖外部状态或修改全局环境。它应该是自包含的、可预测的、可复用的。</p>
-      <p>回到最初的那些痛点 —— Skill 太多、找不到合适的、不敢自己写。我希望你带走的是：<strong>Skill 并不神秘，它们只是结构化的 prompt</strong>。从你最小的痛点开始，写一个做好一件事的 Skill，然后组合它，迭代它。函数式思维会帮你写好它。</p>
-      <p>谢谢大家。进入 Q&A。</p>
+      <p>一个建议，像使用纯函数一样来写你的 Skills。</p>
+      <p>从你最小的痛点开始，写一个做好一件事的 Skill，然后组合它、迭代它。别忘了分享它。</p>
     </aside>
   </section>
 
@@ -430,11 +406,17 @@
       </div>
     </div>
     <aside class="notes">
-      <p>三个补充建议。前两个我已经提过 —— 主动管理你的上下文，记住 AI 是你思考的杠杆，而不是替代品。</p>
-      <p>第三个是 <strong>模型选择</strong>。我观察到一个常见模式：人们总是选最先进的模型 —— 比如 Opus —— 并且每个任务都开启扩展思考。这是巨大的预算浪费。</p>
-      <p>用 80/20 法则想想。<strong>你大约 80% 的日常任务不需要最贵的模型</strong>。写 commit message、做简单重构、生成样板代码 —— 更快更便宜的模型完全能胜任。把重型武器 —— Opus 级别的模型加上扩展思考 —— 留给那 20% 真正需要深度推理的任务：架构决策、复杂调试、精细的代码审查。</p>
-      <p>这直接关联 token 效率。<strong>最贵的 token 就是那些你根本不需要消耗的 token</strong>。把模型匹配到任务复杂度，是削减 AI 预算最简单的方式之一，而且不会牺牲质量。</p>
-      <p>好，进入 Q&A。</p>
+      <p>我还想分享一些关于如何更高效使用 AI Agent 的实际建议。因为时间有限，我不会深入细节，但我觉得背后的动机很容易理解。</p>
+      <p>第一个是：你应该主动管理 AI Agent 的上下文，而不是把它当成黑盒。至少你要知道你的上下文是如何被使用的：</p>
+      <p>* 是否有重复或过时的内容？</p>
+      <p>* 是否有可以丢弃的内容？</p>
+      <p>* prompt 是否太长、包含了太多不必要的部分？</p>
+      <p>* Agent 是否因为缺乏上下文或工具而在单个任务上花费太多时间？</p>
+      <p>如果你不知道它是怎么工作的，你就无法提升 AI Agent 的表现。</p>
+      <p>第二个是：你应该把 AI 当作杠杆，而不是替代你的大脑。AI 应该帮助你更好地思考、收集信息、对比选项、执行任务。你仍然需要思考和做决策，不要依赖 AI 替你完成一切，发一个 prompt 然后就不管了。</p>
+      <p>第三个是关于怎么省预算。可能你们也知道，Cursor 的定价已经从按请求次数改成按 token 用量了。我还听到有同事一周甚至两天就跑完了 500 刀的预算。（这对我来说不太合理）</p>
+      <p>AI 很棒，但不是免费的。你应该明智地使用它并节省预算。</p>
+      <p>最实用的建议是：用合适的模型处理合适的任务。不要每个任务都用最贵的模型，比如 anthropic opus。大多数情况下，我觉得 sonnet 就够了，甚至 haiku 也行，只要用得对。</p>
     </aside>
   </section>
 
@@ -448,8 +430,8 @@
       <span class="slide-number" data-current="13" data-total="13"></span>
     </div>
     <aside class="notes">
-      <p>好，以上就是我今天要分享的全部内容。<strong>问题、评论、反对意见 —— 都欢迎</strong>。</p>
-      <p>如果现在没有什么想到的，欢迎之后找我聊。我随时乐意讨论 Skill、函数式设计或 Token 效率。</p>
+      <p>以上就是我的分享，希望大家喜欢。</p>
+      <p>感谢大家的时间，有问题可以随时问我。</p>
       <p>谢谢大家！</p>
     </aside>
   </section>

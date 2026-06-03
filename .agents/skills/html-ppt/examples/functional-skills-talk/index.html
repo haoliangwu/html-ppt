@@ -27,11 +27,7 @@
       <span class="slide-number" data-current="1" data-total="13"></span>
     </div>
     <aside class="notes">
-      <p>Hey everyone, I'm lyon. Today I want to talk about something I've been exploring over the last six months — <strong>how to use AI Agent Skills more efficiently</strong>.</p>
-      <p>This isn't your typical AI talk. I won't teach you prompt engineering, and I won't explain what MCP is. My angle is <strong>"design thinking"</strong> — specifically, <em>how to apply functional programming principles to design and compose your skills</em>.</p>
-      <p>Why this angle? Because I see most people using skills in a very reactive way: download a bunch, try them, they don't fit, try others, give up. The root cause isn't that there aren't enough skills — it's that <strong>we misunderstand what skills fundamentally are</strong>. They're not magic. They're just "structured prompts."</p>
-      <p>Today in 30 minutes, I'll start from two core functional principles — <strong>single responsibility</strong> and <strong>composition</strong> — and use real examples to show how this mindset produces skills that are dramatically more effective. I'll also share my daily workflow, so you can take something practical home.</p>
-      <p>Let's go.</p>
+      <p>Good Afternoon, everyone, I am Lyon coming from ESDD department. First of all, I want to thank Zhe for having me here today. During this session, I will not share any fundamental knowledge about Skills or something else about AI or Agent because I believe you are all experts in this field. Instead, I want to share my practical experience and thoughts on how to use Skills more efficiently in my daily work.</p>
     </aside>
   </section>
 
@@ -58,13 +54,12 @@
       </div>
     </div>
     <aside class="notes">
-      <p>Quick show of hands — how many of you use skills regularly? How many have written one?</p>
-      <p>OK. What I observe is that most people use skills, but very few write them. Why? I think there are four pain points.</p>
-      <p>First, <strong>there are too many skills</strong>. You open a skill repo and there are hundreds. Each one has long docs. Humans are lazy — we're not going to read through all of them.</p>
-      <p>Second, <strong>even when you find one, it might not work out of the box</strong>. You try it, it doesn't fit your use case, you spend more time adjusting it.</p>
-      <p>Third, and this is the one I think matters most — <strong>people mystify skills</strong>. They think writing a skill requires some special expertise. But a skill is just a prompt with structure. If you can write a prompt, you can write a skill.</p>
-      <p>Fourth, <strong>the trial-and-error cost is high</strong>. A poorly designed skill might contain hundreds of lines. Every time you use it, the AI has to read all of it. If the quality is low, you end up re-doing tasks — each redo is another round of token consumption. That's why skill quality is directly linked to token efficiency.</p>
-      <p>Today my answer focuses on pain points three and four — <strong>how to design skills that are pure, effective, and whose power multiplies when composed</strong>. The answer is functional thinking.</p>
+      <p>I want to start with a question: How do you use Skills in your daily work? Have you ever encountered the following problems?</p>
+      <p>1. Too many Skills in the community, so you can't find the right one</p>
+      <p>2. The Skill you found doesn't work out of the box</p>
+      <p>3. You are afraid to write your own Skill because you don't know how to start</p>
+      <p>4. The trial-and-error cost is too high (especially when you are using Opus)</p>
+      <p>If you have encountered these problems, I believe you will find this session helpful.</p>
     </aside>
   </section>
 
@@ -96,13 +91,8 @@
       </div>
     </div>
     <aside class="notes">
-      <p>Before diving into functional thinking, I need to do one thing — <strong>demystify skills</strong>.</p>
-      <p>What's in a skill file? A system prompt, some trigger conditions, maybe some constraint rules. Fundamentally, it's no different from the system prompt you write in Cursor every day. The only difference: <strong>a skill has a format specification</strong> — where to put it, what metadata to include, how it's triggered.</p>
-      <p>What does this "structure" give you? Three things.</p>
-      <p>First, <strong>it eliminates repetitive prompt engineering</strong>. You know that feeling — every new project, every new conversation, you copy-paste the same long system prompt. Skills fix that. Load once, maintain centrally, update everywhere.</p>
-      <p>Second, <strong>sharing and reuse</strong>. You wrote a skill for handling Bitbucket PRs — your teammate needs the same capability. They just load it. No need to write from scratch. This is huge for team efficiency, because prompt engineering is highly personal — everyone's output quality varies significantly.</p>
-      <p>Third, and most important — <strong>start from the simplest thing</strong>. Many people think a skill needs to cover a complete workflow to be valuable. Wrong. A skill that does just one thing well — like "fetch git diff from CLI" — is already powerful when used correctly. Don't let the mysterious impression intimidate you.</p>
-      <p>OK, demystification done. Now let's get to the core: how functional thinking applies to skill design.</p>
+      <p>But to be honest, I think there is no mystery about Skills. A Skill is just a structured prompt. If you can write a prompt, you can write a Skill. If you know how to conduct proper prompt, you can use Skills properly.</p>
+      <p>The major advantage of Skill is we can share and reuse them because its convention and standard. And I also suggest you to write your own Skill from the simplest thing as long as it can solve your problems.</p>
     </aside>
   </section>
 
@@ -128,11 +118,11 @@
     </div>
     <p class="lede mt-l tc" style="text-align: left;">"<span class="accent">Write your skills like pure functions</span><br>&nbsp;&nbsp; — single responsibility, composable, side-effect free"</p>
     <aside class="notes">
-      <p>The two core principles of functional programming — I'm sure most of you are familiar with them. What surprised me is how few people apply them to skill design.</p>
-      <p><strong>First: single responsibility</strong>. A function does one thing, and does it well. In the skill world, this means one skill covers one business domain. I've seen too many "mega-skills" — like one called "full-stack dev assistant" that crams frontend, backend, database, deployment, testing… all into one file. What happens? <em>The AI has to read thousands of lines every time</em>, and those instructions might even contradict each other. Maintenance is a nightmare.</p>
-      <p><strong>Second: composition</strong>. In the functional world, complex behavior doesn't come from writing complex functions — it comes from composing simple ones. In the skill world, two sufficiently simple and pure skills compose into something more powerful. And here's what might be the most important insight today — <strong>the AI automatically infers which skills to load</strong>.</p>
-      <p>It sees "review this PR" in your task description and loads the code review skill. It sees "fetch from Bitbucket" and loads the Bitbucket CLI skill. This inference capability is enabled by your functional design — because each skill's responsibility boundary is clear enough for the AI to accurately judge "which one applies here."</p>
-      <p>Let me demonstrate with a real case study.</p>
+      <p>Let's talk about the core of this session: Functional Thinking.</p>
+      <p>The point here is no matter which skills you are using or you are trying to create something new, it is a good idea to apply functional thinking to your work.</p>
+      <p>The major two principles of functional thinking are single responsibility and composition.</p>
+      <p>The first one is straightforward: a function does one thing, and does it well. So in skill world, one skill should cover one domain and do it well.</p>
+      <p>The second principle is more complex in functional programming, but the core idea is complex behavior emerges from composing simple functions. So in skill world, two or more simple skills composed together can be a more powerful skill.</p>
     </aside>
   </section>
 
@@ -172,14 +162,16 @@
       <p class="dim"><strong class="accent">💡 AI inference is the key</strong> — it sees "review this Java PR" and automatically loads <span class="mono">using-bitbucket-cli</span> + <span class="mono">java-best-practices</span> + <span class="mono">requesting-code-review</span></p>
     </div>
     <aside class="notes">
-      <p>OK, let me validate everything I just said with a real example. This is a code review scenario I actually use.</p>
-      <p>On the left — the non-functional design — that was my first approach. I wrote one giant skill that covered everything from "how to fetch a PR from Bitbucket" to "how to parse diffs" to "how to generate review comments," all in one file. Then what happened?</p>
-      <p><strong>A month later I needed to review a GitHub repo</strong>. The skill was useless — the "fetch PR" part was hardcoded for Bitbucket's API. I had to either rewrite the whole skill or create a new GitHub version. Both meant tons of duplicated effort.</p>
-      <p>On the right is the refactored version. I split it into <strong>three skills</strong>: <em>one handles "fetching external data" (Bitbucket CLI), one handles "review strategy" (java-best-practices), and a third one handles "the review process" (requesting-code-review)</em>.</p>
-      <p>Why the third one? Because reviewing code isn't just about checking syntax — <strong>you need a strategy</strong>. For Java, that might mean checking code conventions, tech stack constraints, performance patterns, and security concerns. The review flow skill is generic — it describes <em>how</em> to review. But <strong>java-best-practices</strong> describes <em>what</em> to look for. Two different responsibilities.</p>
-      <p>How does the AI know to load all three? Through inference. The AI sees your task description mentions Java review and PR, and automatically loads <strong>using-bitbucket-cli</strong> for the data, <strong>java-best-practices</strong> for the review strategy, and <strong>requesting-code-review</strong> for the flow.</p>
-      <p>The result? Flexibility. When the project migrates to GitHub, I just swap <strong>using-bitbucket-cli</strong> for <strong>using-gh-cli</strong>. When reviewing a Python project, I swap <strong>java-best-practices</strong> for a Python review strategy skill. The core review flow skill never changes. This flexibility isn't something you design extra — it <em>emerges from decomposition</em>. Single responsibility naturally gives you replaceability.</p>
-      <p>That's the core message: <strong>skill design isn't about making the most "capable" skill — it's about making the most "decomposable" one</strong>. Because pure skills compose into real power.</p>
+      <p>Here is a case study, let's say you are a developer and you want to review a PR. You can use the following skills to review the PR:</p>
+      <p>The left one will couple all things together in one skill, it works but not efficient and not easy to maintain.</p>
+      <p>The right one is a more functional design, it splits the skill into three parts:</p>
+      <p>1. Where the data source come from and how to fetch it</p>
+      <p>2. What kind of review criteria should be applied</p>
+      <p>3. How to process review workflow</p>
+      <p>Because we are all engineers here or have some technology background, so we can easily understand the difference between the two designs. The right one is more flexible and easy to maintain.</p>
+      <p>On the other hand, we can make use of the "inference" ability of AI as much as possible to understand our intent and load the appropriate skills automatically.</p>
+      <p>That's all, it is really simple and practical.</p>
+      <p>Then I want to share the Skills I used every day in my daily work.</p>
     </aside>
   </section>
 
@@ -210,11 +202,9 @@
       </div>
     </div>
     <aside class="notes">
-      <p>Now let me share something practical — <strong>the skills I use every day</strong>, organized by category.</p>
-      <p>First, <strong>Token Efficiency</strong>. This one's simple but powerful — <code>caveman</code> compresses output by about 75% while keeping full technical accuracy. It's my default — I turn it on at the start of every conversation. If you take nothing else from today, try this one tomorrow.</p>
-      <p>Second, <strong>Coding</strong>. This is where I spend most of my time. I use the Superpowers skill pack, which gives me a composable development methodology. Each skill does one thing — <code>brainstorming</code> for clarifying requirements, <code>writing-plans</code> for planning, <code>test-driven-development</code> for TDD, <code>subagent-driven-development</code> for running parallel agents, <code>requesting-code-review</code> for reviews, and <code>systematic-debugging</code> for debugging.</p>
-      <p>Two extras: <code>simplify</code> for refactoring code for clarity after writing it, and <code>clonedeps</code> for pulling dependency source code locally so you can inspect library internals.</p>
-      <p>Notice the pattern — <strong>each skill handles one phase of the development cycle</strong>. You load only what you need, when you need it.</p>
+      <p>First, for token efficiency, I use the "caveman" skill to compress the output of the AI. Please note that the skill is focusing on compress on output rather than input. Because the cost of input is much lower than the cost of output.</p>
+      <p>For coding, basically I used "superpowers" skill pack everyday and it is a really powerful skill pack. It covers the whole development cycle from requirement analysis to code review.</p>
+      <p>I also recommend you to use "simplify" skill to refactor the code after you write it. Its author is same as oh-my-opencode-slim plugin in OpenCode. And I have already used OpenCode for a while and give up Cursor due to OpenCode is open-source and cheaper with Rakuten In-House LLM.</p>
     </aside>
   </section>
 
@@ -244,11 +234,10 @@
       </div>
     </div>
     <aside class="notes">
-      <p>Next category — <strong>Context and Harness</strong>. This is about giving your agent the ability to pull information from your internal systems.</p>
-      <p>The context skills are all structured the same way — <strong>one CLI wrapper per system</strong>. Bitbucket, GitHub, Jira, Confluence, Microsoft Teams — each one is a standalone skill that knows how to talk to exactly one system. This is single responsibility in action.</p>
-      <p>Why does this matter? Because when a task says "review the PR from this Jira ticket," the AI can automatically infer it needs <code>using-jira-cli</code> to get ticket context and <code>using-bitbucket-cli</code> to get the code. You didn't hardcode that combination — it <em>emerges</em> from each skill's clear responsibility boundary.</p>
-      <p>And this is where the <strong>declarative principle</strong> kicks in — the more declarative your integration skills are, the higher the ceiling. Describe <em>what</em> you need, not <em>how</em> to get it. Let the AI figure out the "how."</p>
-      <p>Under Harness, <code>creating-agents-md</code> is a single-purpose skill that generates AGENTS.md files — making projects AI-ready. One skill, one job.</p>
+      <p>For context, I suggest everyone to find or write the appropriate skills to connect your AI Agent with the internal systems you work with.</p>
+      <p>Why? Once you do this, you don't need to copy and paste text from here to there anymore and AI Agent can resolve problem on behalf of you.</p>
+      <p>Here are the skills I used everyday.</p>
+      <p>For harness, I use "creating-agents-md" skill to update and create the AGENTS.md file. It is the first skill I wrote several months ago and I have iterated it several times based on community articles and discussions.</p>
     </aside>
   </section>
 
@@ -277,11 +266,11 @@
       <p class="dim" style="font-size:14px"><strong class="accent">Three layers</strong>: deep understanding → project memory → cross-domain retrieval</p>
     </div>
     <aside class="notes">
-      <p>Next — <strong>Knowledge Base and Memory</strong>. This is where skills go beyond just "doing tasks" and start building institutional memory.</p>
-      <p>Three layers here. First, <code>understand-anything</code> — this generates knowledge graphs from codebases and documents. It's how I make sense of a new project or a complex domain. The output is an interactive graph, not just text.</p>
-      <p>Second, <code>using-memvid-cli</code> — per-project knowledge management. Once I understand a project, I store that understanding as a compressed memory that the agent can query later. Think of it as "project-specific context on demand."</p>
-      <p>Third, <code>using-light-rag</code> — this goes beyond a single project. It manages knowledge across projects and domains. When I need to recall how a similar problem was solved in another codebase, this is where I look.</p>
-      <p>Notice the layered architecture — <strong>deep understanding feeds project memory, which feeds cross-domain retrieval</strong>. Each layer is a separate skill with a clear boundary. You can use them independently or compose them.</p>
+      <p>For knowledge base and memory management, I use these three skills for different purposes:</p>
+      <p>"understand-anything" is used to generate knowledge graphs from codebases and documents.</p>
+      <p>"using-memvid-cli" is used to save knowledge related to one specific project.</p>
+      <p>"using-light-rag" is a skill used together with lightweight RAG framework called LightRAG and retrieve knowledge related to multiple projects and business domains.</p>
+      <p>Sometimes, I heard people say RAG is dead due to model context window is long enough to store everything. But in reality, we still need RAG to provide the truthfulness of the information by semantic search and vector storage.</p>
     </aside>
   </section>
 
@@ -309,10 +298,8 @@
       <p class="dim" style="font-size:14px"><strong class="accent">Meta-skills</strong>: skills that create and validate other skills. The Ouroboros of skill engineering.</p>
     </div>
     <aside class="notes">
-      <p>Last category — <strong>Authoring</strong>. These are skills that produce outputs, not just process inputs.</p>
-      <p><code>Kami</code> generates typeset professional documents — reports, whitepapers, one-pagers. <code>html-ppt</code> generates slide decks — in fact, <em>this very deck was created using html-ppt</em>. So you're looking at the output of the thing I'm describing. Very meta.</p>
-      <p>Then there are the meta-skills — <code>skill-creator</code> for creating new skills, and <code>reviewing-skill</code> for validating them. These are skills that operate on skills themselves. The Ouroboros of skill engineering.</p>
-      <p>The important thing here is that <strong>authoring skills follow the same single-responsibility principle</strong>. Kami does documents, html-ppt does slides, skill-creator does skills. They don't overlap. They compose when you need a pipeline — like "research a topic → generate a report → create a slide deck."</p>
+      <p>At last, I usually use "Kami" and "html-ppt" skills to create the documents and presentation materials (like this one).</p>
+      <p>And use the meta skills "skill-creator" and "reviewing-skill" for skill creation tasks.</p>
     </aside>
   </section>
 
@@ -358,15 +345,8 @@
       </div>
     </div>
     <aside class="notes">
-      <p>Here's where composition really shines. These are the actual workflows I use every day — <strong>each one is just a sequence of simple, single-responsibility skills</strong>.</p>
-      <p>Workflow A is the standard superpowers flow for feature development. Brainstorm to clarify, plan to decompose, execute with parallel agents, review, then simplify.</p>
-      <p>Workflow B is my bug-fix flow. Pull context from Jira, recall project knowledge from memvid, write tests first with TDD, review, simplify.</p>
-      <p>Workflow C is the simplest — just two skills composed. Fetch from GitHub, then review. That's it. Two skills, one job.</p>
-      <p>Workflow D is the most complex — a feature request that starts from Confluence docs, enriches with cross-domain knowledge from LightRAG, then goes through the full development cycle.</p>
-      <p>Workflow E is research-oriented — brainstorm a question, understand it deeply with knowledge graphs, then generate a polished document with Kami.</p>
-      <p>And Workflow F is meta — creating skills with skills.</p>
-      <p>Workflow G is about <strong>project AI adaption</strong> — using <code>creating-agents-md</code> to generate an AGENTS.md file that makes any project immediately AI-ready. One skill, one job: bridge the gap between your codebase and your AI agent.</p>
-      <p>Notice something: <strong>every workflow is just a different combination of the same small set of skills</strong>. The skills don't change — the composition changes. That's the power of functional design.</p>
+      <p>Don't forget to follow the functional thinking to design your skills and workflows.</p>
+      <p>Here are some examples. You can find we can compose these skills to finish a complex task like we have a more powerful skill.</p>
     </aside>
   </section>
 
@@ -399,12 +379,8 @@
       <span class="slide-number" data-current="11" data-total="13"></span>
     </div>
     <aside class="notes">
-      <p>If you remember only one thing today, it's this — <strong>"write your skills like pure functions."</strong></p>
-      <p>This has three layers. First, <strong>single responsibility</strong> — one skill does one thing, covers one domain, does it well. No "do-everything" skills.</p>
-      <p>Second, <strong>composable</strong> — two simple skills composed together, the power isn't additive, it's multiplicative. Because the AI automatically infers which skills to load, you don't need to manually orchestrate.</p>
-      <p>Third, <strong>side-effect free</strong> — this is also important in functional thinking. A good skill shouldn't depend on external state or modify the global environment. It should be self-contained, predictable, and reusable.</p>
-      <p>Going back to the original frustration — too many skills, can't find the right one, afraid to write your own. What I want you to take away is: <strong>skills aren't mysterious, they're just structured prompts</strong>. Start from your smallest pain point, write a skill that does one thing well, then compose it, iterate it. Functional thinking will help you write it right.</p>
-      <p>Thanks for listening. Let's move to Q&A.</p>
+      <p>One takeaway, use your skills like pure functions.</p>
+      <p>Start from your smallest pain point, write a skill that does one thing well, then compose it and iterate it. And don't forget to share it.</p>
     </aside>
   </section>
 
@@ -430,11 +406,17 @@
       </div>
     </div>
     <aside class="notes">
-      <p>Three bonus tips before I wrap up. The first two I've mentioned — actively manage your context, and remember that AI is a lever for your thinking, not a replacement for it.</p>
-      <p>The third one is about <strong>model selection</strong>. I see a common pattern: people always pick the most advanced model — like Opus — and enable extended thinking for every single task. That's a huge waste of budget.</p>
-      <p>Think about it with the 80/20 rule. <strong>About 80% of your daily tasks don't require the most expensive model</strong>. Writing a commit message, running a simple refactor, generating boilerplate — a faster, cheaper model handles these just fine. Reserve the heavy artillery — the Opus-level models with extended thinking — for the 20% of tasks that actually need deep reasoning: architectural decisions, complex debugging, nuanced code reviews.</p>
-      <p>This is directly related to token efficiency. <strong>The most expensive token is the one you didn't need to spend</strong>. Matching model to task complexity is one of the easiest ways to cut your AI budget without sacrificing quality.</p>
-      <p>OK, last slide.</p>
+      <p>I will also share some practical tips about how to use AI Agent more efficiently. I will not go deep into the details of these tips because we don't have enough time. But I think the motivation here is really easy to understand.</p>
+      <p>The first one is you should actively manage the context of your AI Agent rather than keep it as black box. At least, you should know how your context is used for different information:</p>
+      <p>* are there any duplicate or outdated ones?</p>
+      <p>* are there any disposable ones?</p>
+      <p>* whether the prompt is too long and contains too many unnecessary parts?</p>
+      <p>* whether Agent spend too much time on a single task due to lack of context or tools?</p>
+      <p>You cannot improve the performance of your AI Agent if you don't know how it works.</p>
+      <p>The second one is you should use AI as a lever rather than a brain replacement. AI should help you think better and gather information, compare options, execute. You still need to think and make decisions, do not rely on AI to do everything for you and send a prompt then let it go.</p>
+      <p>The third one is about how to save your budget. Maybe as you know, the Cursor have changed its pricing model from request limit to token usage limit. And I also heard some colleagues run out 500$ budget in one week even 2 days. (It doesn't make sense to me)</p>
+      <p>AI is awesome, but it is not free. You should use it wisely and save your budget.</p>
+      <p>The most practical tip is you should use the appropriate model for the appropriate task. Don't nuke every task with the most expensive model, for example, the anthropic opus. In most cases, I believe sonnet is enough even haiku as long as you use them properly.</p>
     </aside>
   </section>
 
@@ -448,9 +430,9 @@
       <span class="slide-number" data-current="13" data-total="13"></span>
     </div>
     <aside class="notes">
-      <p>OK, that's all I have for today. <strong>Questions, comments, pushback — all welcome</strong>.</p>
-      <p>If nothing comes to mind right now, feel free to find me later. I'm always happy to chat about skills, functional design, or token efficiency.</p>
-      <p>Thanks everyone!</p>
+      <p>That's all, I hope you enjoy this session.</p>
+      <p>Thank you for your time and feel free to ask any questions you have.</p>
+      <p>Thank you!</p>
     </aside>
   </section>
 
